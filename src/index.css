@@ -1,0 +1,37 @@
+:root {
+  --bg: #10130f;
+  --mint: #b4e7ad;
+  --pale-mint: #d4f3c8;
+  --cyan: #b8f7a4;
+  --pink: #a7df6f;
+  --soft-pink: #ccebbd;
+  --mint-bg: #c8e9bf;
+  --accent-hover: #ddff9f;
+  font-family: Montserrat, Avenir, "Segoe UI", Helvetica, Arial, sans-serif;
+  color: white;
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  scroll-behavior: smooth;
+}
+
+body {
+  min-width: 320px;
+  margin: 0;
+  background: var(--bg);
+}
+
+button,
+a {
+  font: inherit;
+}
