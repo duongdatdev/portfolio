@@ -16,9 +16,6 @@
 }
 
 .brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
   color: var(--mint);
   text-decoration: none;
   transition: color 180ms ease, transform 180ms ease;
@@ -27,18 +24,6 @@
 .brand:hover {
   color: var(--accent-hover);
   transform: translateY(-1px);
-}
-
-.brand img {
-  width: 62px;
-  height: 62px;
-  flex: 0 0 62px;
-  border-radius: 14px;
-  filter: drop-shadow(0 8px 18px rgba(167, 223, 111, 0.18));
-}
-
-.brand-copy {
-  display: block;
 }
 
 .brand strong {
@@ -944,16 +929,6 @@
   .site-header {
     flex-direction: column;
     gap: 18px;
-  }
-
-  .brand {
-    gap: 12px;
-  }
-
-  .brand img {
-    width: 52px;
-    height: 52px;
-    flex-basis: 52px;
   }
 
   .socials {

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Duong Bao Dat logo">
+  <defs>
+    <linearGradient id="bg" x1="9" y1="7" x2="55" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#d4f3c8" />
+      <stop offset="0.48" stop-color="#a7df6f" />
+      <stop offset="1" stop-color="#36c9a3" />
+    </linearGradient>
+    <linearGradient id="shine" x1="18" y1="9" x2="47" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff7d8" stop-opacity="0.9" />
+      <stop offset="1" stop-color="#fff7d8" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="#10130f" />
+  <path
+    fill="url(#bg)"
+    d="M14 10h21.8c9.1 0 15.4 5.4 15.4 13.5 0 4.4-1.9 7.8-5 9.9 4.1 2.1 6.6 5.8 6.6 10.7C52.8 52.7 46 58 36.3 58H14V10Zm12 10.1v27.8h9.4c3.4 0 5.3-1.7 5.3-4.5s-1.9-4.4-5.3-4.4h-6.5v-9.1h5.6c3 0 4.7-1.7 4.7-4.4 0-3.2-2-5.4-5.8-5.4H26Z"
+  />
+  <path
+    fill="#10130f"
+    d="M26 20.1v27.8h9.4c3.4 0 5.3-1.7 5.3-4.5s-1.9-4.4-5.3-4.4h-6.5v-9.1h5.6c3 0 4.7-1.7 4.7-4.4 0-3.2-2-5.4-5.8-5.4H26Z"
+    opacity="0.18"
+  />
+  <path fill="url(#shine)" d="M14 10h37L26 47.5V20.1h7.4c3.8 0 5.8 2.2 5.8 5.4 0 2.7-1.7 4.4-4.7 4.4h-5.6v9.1h6.5c1.9 0 3.4.5 4.3 1.4L28.3 58H14V10Z" opacity="0.34" />
+  <path
+    fill="#10130f"
+    d="M49.6 15.4h-2.9v-4h-4.4v4h-4v4.4h4v4h4.4v-4h2.9v-4.4Zm-2.5 30.2a8.9 8.9 0 1 0 0-17.8 8.9 8.9 0 0 0 0 17.8Zm0-4.2a4.7 4.7 0 1 1 0-9.4 4.7 4.7 0 0 1 0 9.4Z"
+    opacity="0.92"
+  />
+  <path fill="#d4f3c8" d="M47.1 32h1.9v3.1h3.1V37H49v3.1h-1.9V37H44v-1.9h3.1V32Z" />
+</svg>

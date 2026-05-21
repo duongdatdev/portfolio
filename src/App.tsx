@@ -695,11 +695,8 @@ function App() {
             setSelectedProject(null)
           }}
         >
-          <img src="/favicon.svg" alt="" aria-hidden="true" />
-          <span className="brand-copy">
-            <strong>Duong Bao Dat</strong>
-            <span>Game Developer</span>
-          </span>
+          <strong>Duong Bao Dat</strong>
+          <span>Game Developer</span>
         </a>
         <nav className="socials" aria-label="Social links">
           <a href="https://www.linkedin.com/in/duongdatdev" aria-label="LinkedIn">
