@@ -70,16 +70,8 @@ function ExternalIcon() {
 
 function ProfilePhoto() {
   return (
-    <div className="profile-photo" aria-label="Portrait placeholder">
-      <div className="mural" />
-      <div className="head" />
-      <div className="ear left-ear" />
-      <div className="ear right-ear" />
-      <div className="beard" />
-      <div className="nose" />
-      <div className="eye left-eye" />
-      <div className="eye right-eye" />
-      <div className="hoodie" />
+    <div className="profile-photo">
+      <img src="/profile-photo.jpg" alt="Duong Bao Dat" />
     </div>
   )
 }
@@ -88,6 +80,14 @@ function UnifireProject() {
   return (
     <div className="project-image screenshot-scene">
       <img src="/projects/unifire2d-gameplay.png" alt="Unifire2D gameplay" />
+    </div>
+  )
+}
+
+function VectoArenaProject() {
+  return (
+    <div className="project-image screenshot-scene">
+      <img src="/projects/vectoarena-gameplay.png" alt="VectoArena arena gameplay" />
     </div>
   )
 }
@@ -159,19 +159,19 @@ function HomePage({ onSelectProject }: HomePageProps) {
           <button
             className="project-card"
             type="button"
-            onClick={() => onSelectProject('Caro Game Web')}
+            onClick={() => onSelectProject('VectoArena')}
           >
-            <CaroProject />
+            <VectoArenaProject />
             <div className="project-card-body">
-              <div className="project-meta">Solo | Laravel | Vue 3 </div>
+              <div className="project-meta">Solo | Unity | Colyseus | Web3</div>
               <div className="project-card-heading">
-                <h3>Caro Game Web</h3>
+                <h3>VectoArena</h3>
                 <span>{'>'}</span>
               </div>
-              <p>Full-stack Developer</p>
+              <p>Unity Multiplayer Developer</p>
               <p>
-                An online Gomoku game with rooms, realtime moves, in-room chat,
-                leaderboards, match history, and authentication.
+                A real-time multiplayer arena game with combat, progression,
+                collectible VEC rewards, cosmetic skins, and wallet features.
               </p>
             </div>
           </button>
@@ -192,6 +192,25 @@ function HomePage({ onSelectProject }: HomePageProps) {
                 A Minecraft-inspired voxel sandbox prototype with procedural
                 terrain, chunk loading, mining, building, crafting, mobs, and
                 survival systems.
+              </p>
+            </div>
+          </button>
+          <button
+            className="project-card"
+            type="button"
+            onClick={() => onSelectProject('Caro Game Web')}
+          >
+            <CaroProject />
+            <div className="project-card-body">
+              <div className="project-meta">Solo | Laravel | Vue 3 </div>
+              <div className="project-card-heading">
+                <h3>Caro Game Web</h3>
+                <span>{'>'}</span>
+              </div>
+              <p>Full-stack Developer</p>
+              <p>
+                An online Gomoku game with rooms, realtime moves, in-room chat,
+                leaderboards, match history, and authentication.
               </p>
             </div>
           </button>
@@ -229,10 +248,11 @@ type ProjectPageProps = {
 
 function ProjectPage({ title, onBack }: ProjectPageProps) {
   const isUnifire = title === 'Unifire2D'
+  const isVectoArena = title === 'VectoArena'
   const isCaro = title === 'Caro Game Web'
   const isVoxel = title === 'Voxel Sandbox Unity'
 
-  if (!isUnifire && !isCaro && !isVoxel) {
+  if (!isUnifire && !isVectoArena && !isCaro && !isVoxel) {
     return null
   }
 
@@ -247,6 +267,10 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
         {isUnifire ? (
           <div className="project-hero-image">
             <img src="/projects/unifire2d-gameplay.png" alt="Unifire2D gameplay" />
+          </div>
+        ) : isVectoArena ? (
+          <div className="project-hero-image">
+            <img src="/projects/vectoarena-menu.png" alt="VectoArena main menu" />
           </div>
         ) : isCaro ? (
           <div className="project-hero-image">
@@ -271,6 +295,18 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
                   You control a spaceship, dodge incoming asteroids, auto-fire
                   bullets, manage three lives, and try to survive long enough to
                   set a new high score.
+                </p>
+              </>
+            ) : isVectoArena ? (
+              <>
+                <p>
+                  VectoArena is a real-time multiplayer arena game built with
+                  Unity and a Colyseus-powered authoritative server.
+                </p>
+                <p>
+                  Players enter live matches, fight with ranged and melee
+                  attacks, earn VEC rewards, equip cosmetic skins, and connect
+                  a wallet for Web3 features.
                 </p>
               </>
             ) : isCaro ? (
@@ -309,6 +345,14 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
                 <li>Genre: 2D Top-Down Space Shooter</li>
                 <li>Engine: Unity</li>
                 <li>Language: C#</li>
+              </ul>
+            ) : isVectoArena ? (
+              <ul>
+                <li>Role: Unity Multiplayer Developer</li>
+                <li>Engine: Unity 6 / URP</li>
+                <li>Client: C#, UI Toolkit, Input System</li>
+                <li>Multiplayer: Colyseus WebSockets</li>
+                <li>Features: Progression, Wallet, NFT Skins</li>
               </ul>
             ) : isCaro ? (
               <ul>
@@ -492,6 +536,42 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
             This project helped me practice backend integration, realtime event
             architecture, Vue component design, Inertia page state, Laravel
             controllers/models, and testing multiplayer behavior with e2e tests.
+          </p>
+        </div>
+      ) : isVectoArena ? (
+        <div className="project-writeup">
+          <h2>Realtime Arena Combat</h2>
+          <p>
+            VectoArena connects a Unity client to Colyseus rooms for live
+            multiplayer matches. The game synchronizes player movement,
+            shooting, melee attacks, item pickups, zone updates, kill feed
+            events, and match results through the server.
+          </p>
+          <p>
+            Players can join standard battles or Play to Airdrop matches, with
+            progression and VEC reward rules handled through the supporting
+            backend.
+          </p>
+
+          <h2>Accounts, Skins, and Web3</h2>
+          <p>
+            The project includes account registration and login, profile and
+            balance display, transaction history, skin purchasing and
+            equipment, wallet linking by signed verification, deposits, and NFT
+            skin ownership synchronization.
+          </p>
+          <p>
+            Its Unity UI Toolkit screens cover authentication, the home and
+            store flow, settings, gameplay HUD, and death results, while REST
+            endpoints handle inventory and account operations outside matches.
+          </p>
+
+          <h2>Technology Stack</h2>
+          <p>
+            The client uses Unity 6 with Universal Render Pipeline, C#, Unity UI
+            Toolkit, TextMesh Pro, and the Unity Input System. Online play is
+            powered by Colyseus, with Thirdweb, Reown AppKit, and Nethereum
+            supporting wallet and token-related features.
           </p>
         </div>
       ) : (
@@ -708,7 +788,11 @@ function App() {
           <a href="https://duongdat-dev.itch.io" aria-label="itch.io">
             <ItchIcon />
           </a>
-          <a className="resume-link" href="#resume">
+          <a
+            className="resume-link"
+            href="/resume/resume.pdf"
+            download="Duong-Bao-Dat-Resume.pdf"
+          >
             <span>Resume</span>
             <ResumeIcon />
           </a>

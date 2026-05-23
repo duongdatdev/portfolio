@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'caro-game-web', 'unifire2d']),
+  globalIgnores(['dist', 'caro-game-web', 'unifire2d', 'vectoarena']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
