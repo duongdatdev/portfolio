@@ -300,13 +300,15 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
             ) : isVectoArena ? (
               <>
                 <p>
-                  VectoArena is a real-time multiplayer arena game built with
-                  Unity and a Colyseus-powered authoritative server.
+                  VectoArena is a top-down real-time multiplayer arena game
+                  built with Unity 6 and an authoritative Colyseus/Node.js
+                  backend.
                 </p>
                 <p>
-                  Players enter live matches, fight with ranged and melee
-                  attacks, earn VEC rewards, equip cosmetic skins, and connect
-                  a wallet for Web3 features.
+                  Players enter battle or Play to Airdrop matches, scavenge
+                  weapons and medical kits, survive a shrinking zone, earn VEC
+                  rewards, equip cosmetic skins, and connect a wallet for NFT
+                  features.
                 </p>
               </>
             ) : isCaro ? (
@@ -348,11 +350,11 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
               </ul>
             ) : isVectoArena ? (
               <ul>
-                <li>Role: Unity Multiplayer Developer</li>
+                <li>Role: Full-stack Multiplayer Game Developer</li>
                 <li>Engine: Unity 6 / URP</li>
-                <li>Client: C#, UI Toolkit, Input System</li>
-                <li>Multiplayer: Colyseus WebSockets</li>
-                <li>Features: Progression, Wallet, NFT Skins</li>
+                <li>Client: C#, UI Toolkit, Input System, WebGL</li>
+                <li>Server: TypeScript, Colyseus, Express, Prisma</li>
+                <li>Web3: Reown AppKit, Thirdweb, ethers</li>
               </ul>
             ) : isCaro ? (
               <ul>
@@ -540,38 +542,99 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
         </div>
       ) : isVectoArena ? (
         <div className="project-writeup">
-          <h2>Realtime Arena Combat</h2>
+          <div className="project-links">
+            <a
+              className="code-link"
+              href="https://github.com/duongdatdev/VectoArena"
+              target="_blank"
+            >
+              <span>Code - VectoArena Unity Client</span>
+              <ExternalIcon />
+            </a>
+
+            <a
+              className="code-link"
+              href="https://github.com/duongdatdev/vectoarena_server"
+              target="_blank"
+            >
+              <span>Code - VectoArena Server</span>
+              <ExternalIcon />
+            </a>
+
+            <a
+              className="code-link demo-link"
+              href="https://youtu.be/TOUzaXFUPto"
+              target="_blank"
+            >
+              <span>Demo - VectoArena Gameplay</span>
+              <ExternalIcon />
+            </a>
+          </div>
+
+          <h2>Game Loop and Arena Combat</h2>
           <p>
-            VectoArena connects a Unity client to Colyseus rooms for live
-            multiplayer matches. The game synchronizes player movement,
-            shooting, melee attacks, item pickups, zone updates, kill feed
-            events, and match results through the server.
+            VectoArena is a compact multiplayer survival arena where players
+            spawn into a match, collect weapons or medical kits, fight using
+            ranged and melee attacks, and remain inside a progressively
+            shrinking danger zone. The live HUD communicates health, ammo,
+            pickups, kill feed activity, the minimap, and end-of-match results.
           </p>
           <p>
-            Players can join standard battles or Play to Airdrop matches, with
-            progression and VEC reward rules handled through the supporting
-            backend.
+            The game supports a standard battle room and a gated Play to
+            Airdrop room. Matches can fill empty positions with bots, allowing
+            the full combat and reward loop to be demonstrated while human
+            players join, disconnect, or reconnect.
           </p>
 
-          <h2>Accounts, Skins, and Web3</h2>
+          <h2>Authoritative Multiplayer Backend</h2>
           <p>
-            The project includes account registration and login, profile and
-            balance display, transaction history, skin purchasing and
-            equipment, wallet linking by signed verification, deposits, and NFT
-            skin ownership synchronization.
+            The Unity client communicates with Colyseus rooms over WebSockets
+            for synchronized movement, shooting, melee attacks, pickups, zone
+            state, kill feed events, and match results. Server-side gameplay
+            logic validates attack distance and cooldowns, pickup interaction,
+            zone damage, reconnect windows, match completion, and reward
+            recording instead of trusting client actions.
           </p>
           <p>
-            Its Unity UI Toolkit screens cover authentication, the home and
-            store flow, settings, gameplay HUD, and death results, while REST
-            endpoints handle inventory and account operations outside matches.
+            Match balance is data-driven: a runtime JSON configuration controls
+            four-player rooms, bot fill, initial item spawns, weapon damage,
+            firing rates, ammo, healing, and pickup distances. The backend
+            persists matches, participants, kills, currency transactions, and
+            loadouts through Prisma and PostgreSQL.
           </p>
 
-          <h2>Technology Stack</h2>
+          <h2>Progression, Cosmetics, and Web3</h2>
           <p>
-            The client uses Unity 6 with Universal Render Pipeline, C#, Unity UI
-            Toolkit, TextMesh Pro, and the Unity Input System. Online play is
-            powered by Colyseus, with Thirdweb, Reown AppKit, and Nethereum
-            supporting wallet and token-related features.
+            Beyond a match, the player flow includes registration and login,
+            profile and currency balances, XP progression, transaction history,
+            a cosmetic store, and equippable character skins. Normal cosmetic
+            ownership and NFT-backed skins share one inventory experience in the
+            client while the server verifies the ownership rules.
+          </p>
+          <p>
+            Wallet linking uses a short-lived nonce and a signed verification
+            message. The Web3 flow can verify VEC token deposits, synchronize
+            NFT skin ownership, and confirm NFT purchase transactions through
+            configured blockchain RPC providers, with the server retaining
+            authority over credited balances and unlocked cosmetics.
+          </p>
+
+          <h2>Client Experience and Architecture</h2>
+          <p>
+            The Unity 6 client uses URP, UI Toolkit, TextMesh Pro, and the Input
+            System across three core scenes: authentication, the home/store and
+            matchmaking interface, and the gameplay arena. It includes wallet
+            connection feedback, inventory and skin presentation, settings,
+            audio, matchmaking selection, gameplay HUD, and death/result flow.
+          </p>
+          <p>
+            I built the connected gameplay architecture across a C# Unity
+            client and a TypeScript backend: REST APIs for account and inventory
+            actions, Colyseus state synchronization for active matches, Prisma
+            persistence for progression and history, and Web3 services for
+            wallet and NFT interactions. The project targets standalone builds
+            and WebGL, making it suitable for a browser-accessible multiplayer
+            game demo.
           </p>
         </div>
       ) : (
