@@ -70,6 +70,59 @@ function ExternalIcon() {
   )
 }
 
+function PlayIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M8 5v14l11-7z" />
+    </svg>
+  )
+}
+
+function PauseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+    </svg>
+  )
+}
+
+function ChevronUpIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z" />
+    </svg>
+  )
+}
+
+function ScrollToTopButton() {
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setVisible(window.scrollY > 400)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  return (
+    <button
+      className={`scroll-to-top${visible ? ' visible' : ''}`}
+      onClick={scrollToTop}
+      aria-label="Scroll to top"
+      title="Back to top"
+      type="button"
+    >
+      <ChevronUpIcon />
+    </button>
+  )
+}
+
 function ProfilePhoto() {
   return (
     <div className="profile-photo">
@@ -84,6 +137,7 @@ type ProjectMediaProps = {
   alt: string
   className?: string
   playOnHover?: boolean
+  autoPlayOnce?: boolean
 }
 
 function ProjectMedia({
@@ -92,10 +146,30 @@ function ProjectMedia({
   alt,
   className = 'project-image screenshot-scene',
   playOnHover = true,
+  autoPlayOnce = false,
 }: ProjectMediaProps) {
   const [videoError, setVideoError] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!autoPlayOnce) return
+
+    const video = videoRef.current
+    if (!video) return
+
+    // Autoplay immediately on mount
+    video.play().catch((err) => {
+      console.log('Autoplay once failed:', err)
+    })
+
+    // Pause video after 2000ms (when intro animations finish)
+    const timer = setTimeout(() => {
+      video.pause()
+    }, 2000)
+
+    return () => clearTimeout(timer)
+  }, [autoPlayOnce, videoSrc])
 
   useEffect(() => {
     if (!playOnHover) return
@@ -325,6 +399,7 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
             videoSrc="/projects/unifire2d-gameplay.mp4"
             alt="Unifire2D gameplay"
             className="project-hero-image"
+            autoPlayOnce={true}
           />
         ) : isVectoArena ? (
           <ProjectMedia
@@ -332,6 +407,7 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
             videoSrc="/projects/vectoarena-gameplay.mp4"
             alt="VectoArena main menu"
             className="project-hero-image"
+            autoPlayOnce={true}
           />
         ) : isCaro ? (
           <ProjectMedia
@@ -339,6 +415,7 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
             videoSrc="/projects/caro-gameplay.mp4"
             alt="Caro Game Web board"
             className="project-hero-image"
+            autoPlayOnce={true}
           />
         ) : (
           <ProjectMedia
@@ -346,6 +423,7 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
             videoSrc="/projects/voxel-sandbox-gameplay.mp4"
             alt="Voxel Sandbox Unity world"
             className="project-hero-image"
+            autoPlayOnce={true}
           />
         )}
         <h2>{title}</h2>
@@ -942,6 +1020,15 @@ function App() {
   }
 
   const [selectedProject, setSelectedProject] = useState<string | null>(getProjectFromHash)
+  const [isWarping, setIsWarping] = useState(false)
+  const [motionEnabled, setMotionEnabled] = useState(() => {
+    const saved = localStorage.getItem('portfolio_motion')
+    return saved !== 'false'
+  })
+  const [initialWarp, setInitialWarp] = useState(() => {
+    const saved = localStorage.getItem('portfolio_motion')
+    return saved !== 'false'
+  })
 
   useEffect(() => {
     const handleHashChange = () => {
@@ -952,22 +1039,57 @@ function App() {
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
+  useEffect(() => {
+    if (!motionEnabled) return
+    const timer = setTimeout(() => {
+      setInitialWarp(false)
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [motionEnabled])
+
+  const toggleMotion = () => {
+    setMotionEnabled((prev) => {
+      const next = !prev
+      localStorage.setItem('portfolio_motion', String(next))
+      return next
+    })
+  }
+
   const handleSelectProject = (title: string) => {
-    const slug = titleToSlug(title)
-    if (slug) {
-      window.location.hash = slug
+    if (motionEnabled) {
+      setIsWarping(true)
+      setTimeout(() => {
+        const slug = titleToSlug(title)
+        if (slug) {
+          window.location.hash = slug
+        }
+        setIsWarping(false)
+      }, 800)
+    } else {
+      const slug = titleToSlug(title)
+      if (slug) {
+        window.location.hash = slug
+      }
     }
   }
 
   const handleBack = () => {
-    window.location.hash = ''
+    if (motionEnabled) {
+      setIsWarping(true)
+      setTimeout(() => {
+        window.location.hash = ''
+        setIsWarping(false)
+      }, 800)
+    } else {
+      window.location.hash = ''
+    }
   }
 
   return (
     <>
-      <StarfieldBackground />
-      <main className="portfolio">
-        <header className="site-header">
+      <StarfieldBackground isWarping={isWarping || initialWarp} motionEnabled={motionEnabled} />
+      <main className={`portfolio ${isWarping ? 'warp-active' : ''} ${!motionEnabled ? 'motion-disabled' : ''}`}>
+        <header className="site-header" key={selectedProject ? 'project' : 'home'}>
           <a
             className="brand"
             href="#top"
@@ -998,6 +1120,14 @@ function App() {
               <span>Resume</span>
               <ResumeIcon />
             </a>
+            <button
+              className="motion-toggle"
+              onClick={toggleMotion}
+              title={motionEnabled ? "Disable Background Motion" : "Enable Background Motion"}
+              aria-label="Toggle motion background"
+            >
+              {motionEnabled ? <PauseIcon /> : <PlayIcon />}
+            </button>
           </nav>
         </header>
 
@@ -1013,6 +1143,7 @@ function App() {
           </>
         )}
       </main>
+      <ScrollToTopButton />
     </>
   )
 }
