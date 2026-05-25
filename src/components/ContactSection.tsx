@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const FORMSPREE_FORM_ID = 'xkoeqwnb'
+const FORMSPREE_FORM_ID: string = 'xkoeqwnb'
 
 export function ContactSection() {
   const [name, setName] = useState('')
