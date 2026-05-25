@@ -299,7 +299,9 @@
 }
 
 .screenshot-scene img,
-.project-hero-image img {
+.screenshot-scene video,
+.project-hero-image img,
+.project-hero-image video {
   display: block;
   width: 100%;
   height: 100%;
@@ -719,6 +721,72 @@
   border-color: var(--accent-hover);
   background: rgba(167, 223, 111, 0.1);
   transform: translateY(-2px);
+}
+
+.video-embed-container {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 18px 0 22px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(167, 223, 111, 0.25);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+  background: #000;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.video-embed-container:hover {
+  border-color: var(--accent-hover);
+  box-shadow: 0 16px 48px rgba(167, 223, 111, 0.15), 0 12px 36px rgba(0, 0, 0, 0.5);
+}
+
+.video-embed-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.project-action-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0 0 34px;
+}
+
+.project-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border: 2px solid var(--lime);
+  border-radius: 6px;
+  color: var(--lime) !important;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+  background: transparent;
+  cursor: pointer;
+  transition: background 180ms ease, border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+}
+
+.project-btn:hover {
+  border-color: var(--accent-hover);
+  color: var(--accent-hover) !important;
+  background: rgba(167, 223, 111, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(167, 223, 111, 0.15);
+}
+
+.project-btn svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+  transform: none !important;
 }
 
 @keyframes slide-fade-in {

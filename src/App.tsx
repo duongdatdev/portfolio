@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './App.css'
 import { StarfieldBackground } from './components/StarfieldBackground'
 import { ContactSection } from './components/ContactSection'
@@ -78,37 +78,74 @@ function ProfilePhoto() {
   )
 }
 
-function UnifireProject() {
+type ProjectMediaProps = {
+  imageSrc: string
+  videoSrc?: string
+  alt: string
+  className?: string
+  playOnHover?: boolean
+}
+
+function ProjectMedia({
+  imageSrc,
+  videoSrc,
+  alt,
+  className = 'project-image screenshot-scene',
+  playOnHover = true,
+}: ProjectMediaProps) {
+  const [videoError, setVideoError] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (!playOnHover) return
+
+    const video = videoRef.current
+    const container = containerRef.current
+    if (!video || !container) return
+
+    const hoverTarget = container.closest('.project-card') || container
+
+    const handleMouseEnter = () => {
+      video.play().catch((err) => {
+        console.log('Play interrupted or failed:', err)
+      })
+    }
+
+    const handleMouseLeave = () => {
+      video.pause()
+      video.currentTime = 0
+    }
+
+    hoverTarget.addEventListener('mouseenter', handleMouseEnter)
+    hoverTarget.addEventListener('mouseleave', handleMouseLeave)
+
+    return () => {
+      hoverTarget.removeEventListener('mouseenter', handleMouseEnter)
+      hoverTarget.removeEventListener('mouseleave', handleMouseLeave)
+    }
+  }, [videoError, videoSrc, playOnHover])
+
   return (
-    <div className="project-image screenshot-scene">
-      <img src="/projects/unifire2d-gameplay.png" alt="Unifire2D gameplay" />
+    <div className={className} ref={containerRef}>
+      {videoSrc && !videoError ? (
+        <video
+          ref={videoRef}
+          src={videoSrc}
+          poster={imageSrc}
+          autoPlay={!playOnHover}
+          loop
+          muted
+          playsInline
+          onError={() => setVideoError(true)}
+        />
+      ) : (
+        <img src={imageSrc} alt={alt} />
+      )}
     </div>
   )
 }
 
-function VectoArenaProject() {
-  return (
-    <div className="project-image screenshot-scene">
-      <img src="/projects/vectoarena-gameplay.png" alt="VectoArena arena gameplay" />
-    </div>
-  )
-}
-
-function CaroProject() {
-  return (
-    <div className="project-image screenshot-scene">
-      <img src="/projects/caro-game-board.png" alt="Caro Game Web board" />
-    </div>
-  )
-}
-
-function VoxelProject() {
-  return (
-    <div className="project-image screenshot-scene">
-      <img src="/projects/voxel-sandbox-gameplay.png" alt="Voxel Sandbox Unity gameplay" />
-    </div>
-  )
-}
 
 type HomePageProps = {
   onSelectProject: (project: string) => void
@@ -144,7 +181,11 @@ function HomePage({ onSelectProject }: HomePageProps) {
             type="button"
             onClick={() => onSelectProject('Unifire2D')}
           >
-            <UnifireProject />
+            <ProjectMedia
+              imageSrc="/projects/unifire2d-gameplay.png"
+              videoSrc="/projects/unifire2d-gameplay.mp4"
+              alt="Unifire2D gameplay"
+            />
             <div className="project-card-body">
               <div className="project-meta">Solo | Unity | C#</div>
               <div className="project-card-heading">
@@ -163,7 +204,11 @@ function HomePage({ onSelectProject }: HomePageProps) {
             type="button"
             onClick={() => onSelectProject('VectoArena')}
           >
-            <VectoArenaProject />
+            <ProjectMedia
+              imageSrc="/projects/vectoarena-gameplay.png"
+              videoSrc="/projects/vectoarena-gameplay.mp4"
+              alt="VectoArena arena gameplay"
+            />
             <div className="project-card-body">
               <div className="project-meta">Solo | Unity | Colyseus | Web3</div>
               <div className="project-card-heading">
@@ -182,7 +227,11 @@ function HomePage({ onSelectProject }: HomePageProps) {
             type="button"
             onClick={() => onSelectProject('Voxel Sandbox Unity')}
           >
-            <VoxelProject />
+            <ProjectMedia
+              imageSrc="/projects/voxel-sandbox-gameplay.png"
+              videoSrc="/projects/voxel-sandbox-gameplay.mp4"
+              alt="Voxel Sandbox Unity gameplay"
+            />
             <div className="project-card-body">
               <div className="project-meta">Solo | Unity | C#</div>
               <div className="project-card-heading">
@@ -202,7 +251,11 @@ function HomePage({ onSelectProject }: HomePageProps) {
             type="button"
             onClick={() => onSelectProject('Caro Game Web')}
           >
-            <CaroProject />
+            <ProjectMedia
+              imageSrc="/projects/caro-game-board.png"
+              videoSrc="/projects/caro-gameplay.mp4"
+              alt="Caro Game Web board"
+            />
             <div className="project-card-body">
               <div className="project-meta">Solo | Laravel | Vue 3 </div>
               <div className="project-card-heading">
@@ -267,21 +320,33 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
 
       <div className="project-detail">
         {isUnifire ? (
-          <div className="project-hero-image">
-            <img src="/projects/unifire2d-gameplay.png" alt="Unifire2D gameplay" />
-          </div>
+          <ProjectMedia
+            imageSrc="/projects/unifire2d-gameplay.png"
+            videoSrc="/projects/unifire2d-gameplay.mp4"
+            alt="Unifire2D gameplay"
+            className="project-hero-image"
+          />
         ) : isVectoArena ? (
-          <div className="project-hero-image">
-            <img src="/projects/vectoarena-menu.png" alt="VectoArena main menu" />
-          </div>
+          <ProjectMedia
+            imageSrc="/projects/vectoarena-menu.png"
+            videoSrc="/projects/vectoarena-gameplay.mp4"
+            alt="VectoArena main menu"
+            className="project-hero-image"
+          />
         ) : isCaro ? (
-          <div className="project-hero-image">
-            <img src="/projects/caro-game-board.png" alt="Caro Game Web board" />
-          </div>
+          <ProjectMedia
+            imageSrc="/projects/caro-game-board.png"
+            videoSrc="/projects/caro-gameplay.mp4"
+            alt="Caro Game Web board"
+            className="project-hero-image"
+          />
         ) : (
-          <div className="project-hero-image">
-            <img src="/projects/voxel-sandbox-world.png" alt="Voxel Sandbox Unity world" />
-          </div>
+          <ProjectMedia
+            imageSrc="/projects/voxel-sandbox-world.png"
+            videoSrc="/projects/voxel-sandbox-gameplay.mp4"
+            alt="Voxel Sandbox Unity world"
+            className="project-hero-image"
+          />
         )}
         <h2>{title}</h2>
         <div className="detail-grid">
@@ -381,32 +446,49 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
 
       {isUnifire ? (
         <div className="project-writeup">
-          <a
-            className="code-link"
-            href="https://github.com/duongdatdev/unifire2d"
-            target="_blank"
-          >
-            <span>Code - Unifire2D Unity Project</span>
-            <ExternalIcon />
-          </a>
+          <h2>Gameplay Demo</h2>
+          <p>
+            Watch a short gameplay demo showing spaceship movement, asteroid dodging,
+            auto-shooting, health system, and score progression.
+          </p>
 
-          <a
-            className="code-link demo-link"
-            href="https://youtu.be/0qC3WmC_r2w"
-            target="_blank"
-          >
-            <span>Demo - Unifire2D Gameplay</span>
-            <ExternalIcon />
-          </a>
+          <div className="video-embed-container">
+            <iframe
+              src="https://www.youtube.com/embed/0qC3WmC_r2w"
+              title="Unifire2D Gameplay Demo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+          </div>
 
-          <a
-            className="code-link play-link"
-            href="https://duongdat-dev.itch.io/unifire-2d"
-            target="_blank"
-          >
-            <span>Play - Unifire2D on itch.io</span>
-            <ExternalIcon />
-          </a>
+          <div className="project-action-links">
+            <a
+              className="project-btn play-btn"
+              href="https://duongdat-dev.itch.io/unifire-2d"
+              target="_blank"
+            >
+              <span>Play on itch.io</span>
+              <ExternalIcon />
+            </a>
+
+            <a
+              className="project-btn code-btn"
+              href="https://github.com/duongdatdev/unifire2d"
+              target="_blank"
+            >
+              <span>View Source Code</span>
+              <ExternalIcon />
+            </a>
+
+            <a
+              className="project-btn youtube-btn"
+              href="https://youtu.be/0qC3WmC_r2w"
+              target="_blank"
+            >
+              <span>Open on YouTube</span>
+              <ExternalIcon />
+            </a>
+          </div>
 
           <h2>Gameplay Features</h2>
           <p>
@@ -544,31 +626,46 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
         </div>
       ) : isVectoArena ? (
         <div className="project-writeup">
-          <div className="project-links">
+          <h2>Gameplay Demo</h2>
+          <p>
+            Watch a short gameplay demo showing multiplayer arena combat, bot behavior,
+            zone shrinking, weapon pickups, and real-time synchronization.
+          </p>
+
+          <div className="video-embed-container">
+            <iframe
+              src="https://www.youtube.com/embed/TOUzaXFUPto"
+              title="VectoArena Gameplay Demo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowFullScreen
+            ></iframe>
+          </div>
+
+          <div className="project-action-links">
             <a
-              className="code-link"
+              className="project-btn code-btn"
               href="https://github.com/duongdatdev/VectoArena"
               target="_blank"
             >
-              <span>Code - VectoArena Unity Client</span>
+              <span>View Client Code</span>
               <ExternalIcon />
             </a>
 
             <a
-              className="code-link"
+              className="project-btn code-btn"
               href="https://github.com/duongdatdev/vectoarena_server"
               target="_blank"
             >
-              <span>Code - VectoArena Server</span>
+              <span>View Server Code</span>
               <ExternalIcon />
             </a>
 
             <a
-              className="code-link demo-link"
+              className="project-btn youtube-btn"
               href="https://youtu.be/TOUzaXFUPto"
               target="_blank"
             >
-              <span>Demo - VectoArena Gameplay</span>
+              <span>Open on YouTube</span>
               <ExternalIcon />
             </a>
           </div>
