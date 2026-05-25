@@ -1,10 +1,6 @@
 import React, { useState } from 'react'
 
-// TO MAKE THE FORM WORK:
-// 1. Register a free account on https://formspree.io/
-// 2. Create a new form targeting your email (duongbaodat.dev@gmail.com)
-// 3. Paste the generated Form ID below (replace 'xxxxxxxx')
-const FORMSPREE_FORM_ID = 'xxxxxxxx' // Leave as 'xxxxxxxx' to run in demo/simulation mode
+const FORMSPREE_FORM_ID = 'xkoeqwnb'
 
 export function ContactSection() {
   const [name, setName] = useState('')
