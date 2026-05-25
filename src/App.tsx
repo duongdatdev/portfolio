@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
+import { StarfieldBackground } from './components/StarfieldBackground'
+import { ContactSection } from './components/ContactSection'
 
 const skills = [
   'C#',
@@ -823,54 +825,98 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
   )
 }
 
+const projectSlugs: Record<string, string> = {
+  'unifire2d': 'Unifire2D',
+  'vectoarena': 'VectoArena',
+  'voxel-sandbox': 'Voxel Sandbox Unity',
+  'caro-game': 'Caro Game Web',
+}
+
+const slugToTitle = (slug: string) => projectSlugs[slug.toLowerCase()] || null
+const titleToSlug = (title: string) => {
+  const entry = Object.entries(projectSlugs).find((item) => item[1] === title)
+  return entry ? entry[0] : ''
+}
+
 function App() {
-  const [selectedProject, setSelectedProject] = useState<string | null>(null)
+  const getProjectFromHash = () => {
+    const hash = window.location.hash.replace('#', '')
+    return slugToTitle(hash)
+  }
+
+  const [selectedProject, setSelectedProject] = useState<string | null>(getProjectFromHash)
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setSelectedProject(getProjectFromHash())
+      window.scrollTo(0, 0)
+    }
+    window.addEventListener('hashchange', handleHashChange)
+    return () => window.removeEventListener('hashchange', handleHashChange)
+  }, [])
+
+  const handleSelectProject = (title: string) => {
+    const slug = titleToSlug(title)
+    if (slug) {
+      window.location.hash = slug
+    }
+  }
+
+  const handleBack = () => {
+    window.location.hash = ''
+  }
 
   return (
-    <main className="portfolio">
-      <header className="site-header">
-        <a
-          className="brand"
-          href="#top"
-          aria-label="Duong Bao Dat home"
-          onClick={(event) => {
-            event.preventDefault()
-            setSelectedProject(null)
-          }}
-        >
-          <strong>Duong Bao Dat</strong>
-          <span>Game Developer</span>
-        </a>
-        <nav className="socials" aria-label="Social links">
-          <a href="https://www.linkedin.com/in/duongdatdev" aria-label="LinkedIn">
-            <LinkedinIcon />
-          </a>
-          <a href="https://github.com/duongdatdev" aria-label="GitHub">
-            <GithubIcon />
-          </a>
-          <a href="https://duongdat-dev.itch.io" aria-label="itch.io">
-            <ItchIcon />
-          </a>
+    <>
+      <StarfieldBackground />
+      <main className="portfolio">
+        <header className="site-header">
           <a
-            className="resume-link"
-            href="/resume/resume.pdf"
-            download="Duong-Bao-Dat-Resume.pdf"
+            className="brand"
+            href="#top"
+            aria-label="Duong Bao Dat home"
+            onClick={(event) => {
+              event.preventDefault()
+              handleBack()
+            }}
           >
-            <span>Resume</span>
-            <ResumeIcon />
+            <strong>Duong Bao Dat</strong>
+            <span>Game Developer</span>
           </a>
-        </nav>
-      </header>
+          <nav className="socials" aria-label="Social links">
+            <a href="https://www.linkedin.com/in/duongdatdev" aria-label="LinkedIn">
+              <LinkedinIcon />
+            </a>
+            <a href="https://github.com/duongdatdev" aria-label="GitHub">
+              <GithubIcon />
+            </a>
+            <a href="https://duongdat-dev.itch.io" aria-label="itch.io">
+              <ItchIcon />
+            </a>
+            <a
+              className="resume-link"
+              href="/resume/resume.pdf"
+              download="Duong-Bao-Dat-Resume.pdf"
+            >
+              <span>Resume</span>
+              <ResumeIcon />
+            </a>
+          </nav>
+        </header>
 
-      {selectedProject ? (
-        <ProjectPage
-          title={selectedProject}
-          onBack={() => setSelectedProject(null)}
-        />
-      ) : (
-        <HomePage onSelectProject={setSelectedProject} />
-      )}
-    </main>
+        {selectedProject ? (
+          <ProjectPage
+            title={selectedProject}
+            onBack={handleBack}
+          />
+        ) : (
+          <>
+            <HomePage onSelectProject={handleSelectProject} />
+            <ContactSection />
+          </>
+        )}
+      </main>
+    </>
   )
 }
 
