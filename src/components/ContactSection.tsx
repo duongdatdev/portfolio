@@ -95,7 +95,8 @@ export function ContactSection() {
             <a
               className="resume-link boxed"
               href="/resume/resume.pdf"
-              download="Duong-Bao-Dat-Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -114,7 +115,7 @@ export function ContactSection() {
                 e.currentTarget.style.background = 'transparent'
               }}
             >
-              <span>Download My Resume (PDF)</span>
+              <span>View My Resume (PDF)</span>
             </a>
           </div>
         </div>

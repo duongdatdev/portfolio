@@ -1103,19 +1103,20 @@ function App() {
             <span>Game Developer</span>
           </a>
           <nav className="socials" aria-label="Social links">
-            <a href="https://www.linkedin.com/in/duongdatdev" aria-label="LinkedIn">
+            <a href="https://www.linkedin.com/in/duongdatdev" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
               <LinkedinIcon />
             </a>
-            <a href="https://github.com/duongdatdev" aria-label="GitHub">
+            <a href="https://github.com/duongdatdev" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
               <GithubIcon />
             </a>
-            <a href="https://duongdat-dev.itch.io" aria-label="itch.io">
+            <a href="https://duongdat-dev.itch.io" aria-label="itch.io" target="_blank" rel="noopener noreferrer">
               <ItchIcon />
             </a>
             <a
               className="resume-link"
               href="/resume/resume.pdf"
-              download="Duong-Bao-Dat-Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               <span>Resume</span>
               <ResumeIcon />
