@@ -2,6 +2,9 @@ import React, { useState } from 'react'
 
 const FORMSPREE_FORM_ID: string = 'xkoeqwnb'
 
+const SHOW_CONTACT_SECTION = false
+const SHOW_CONTACT_FORM = false
+
 export function ContactSection() {
   const [name, setName] = useState('')
   const [company, setCompany] = useState('')
@@ -9,6 +12,10 @@ export function ContactSection() {
   const [opportunityType, setOpportunityType] = useState('Internship')
   const [message, setMessage] = useState('')
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle')
+
+  if (!SHOW_CONTACT_SECTION) {
+    return null
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -73,7 +80,7 @@ export function ContactSection() {
   return (
     <section className="section-block contact-block" id="contact">
       <h2>Recruitment & Collaboration</h2>
-      <div className="contact-container">
+      <div className="contact-container" style={!SHOW_CONTACT_FORM ? { gridTemplateColumns: '1fr', maxWidth: '720px', margin: '24px auto 0' } : undefined}>
         <div className="contact-info">
           <h3>Looking for a Game Developer or Software Engineer?</h3>
           <p>
@@ -120,100 +127,102 @@ export function ContactSection() {
           </div>
         </div>
 
-        <div className="contact-form-wrapper">
-          {status === 'success' ? (
-            <div className="contact-success-message">
-              <div className="success-icon">✓</div>
-              <h3>Message Sent!</h3>
-              <p>Thank you for reaching out. Dat will get back to you as soon as possible.</p>
-            </div>
-          ) : (
-            <form className="contact-form" onSubmit={handleSubmit}>
-              {status === 'error' && (
-                <div style={{ color: '#ff6b6b', background: 'rgba(255, 107, 107, 0.1)', padding: '12px', borderRadius: '4px', border: '1px solid rgba(255, 107, 107, 0.2)', fontSize: '0.95rem' }}>
-                  An error occurred. Please try again or email directly to <a href="mailto:duongbaodat.dev@gmail.com" style={{ color: 'var(--lime)', textDecoration: 'underline' }}>duongbaodat.dev@gmail.com</a>.
+        {SHOW_CONTACT_FORM && (
+          <div className="contact-form-wrapper">
+            {status === 'success' ? (
+              <div className="contact-success-message">
+                <div className="success-icon">✓</div>
+                <h3>Message Sent!</h3>
+                <p>Thank you for reaching out. Dat will get back to you as soon as possible.</p>
+              </div>
+            ) : (
+              <form className="contact-form" onSubmit={handleSubmit}>
+                {status === 'error' && (
+                  <div style={{ color: '#ff6b6b', background: 'rgba(255, 107, 107, 0.1)', padding: '12px', borderRadius: '4px', border: '1px solid rgba(255, 107, 107, 0.2)', fontSize: '0.95rem' }}>
+                    An error occurred. Please try again or email directly to <a href="mailto:duongbaodat.dev@gmail.com" style={{ color: 'var(--lime)', textDecoration: 'underline' }}>duongbaodat.dev@gmail.com</a>.
+                  </div>
+                )}
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="contact-name">Your Name *</label>
+                    <input
+                      type="text"
+                      id="contact-name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="E.g., John Doe"
+                      required
+                      disabled={status === 'sending'}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="contact-company">Company / Organization</label>
+                    <input
+                      type="text"
+                      id="contact-company"
+                      value={company}
+                      onChange={(e) => setCompany(e.target.value)}
+                      placeholder="E.g., Indie Studio"
+                      disabled={status === 'sending'}
+                    />
+                  </div>
                 </div>
-              )}
-              <div className="form-row">
+
+                <div className="form-row">
+                  <div className="form-group">
+                    <label htmlFor="contact-email">Work Email *</label>
+                    <input
+                      type="email"
+                      id="contact-email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="name@company.com"
+                      required
+                      disabled={status === 'sending'}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="contact-opportunity">Opportunity Type</label>
+                    <select
+                      id="contact-opportunity"
+                      value={opportunityType}
+                      onChange={(e) => setOpportunityType(e.target.value)}
+                      disabled={status === 'sending'}
+                    >
+                      <option value="Internship">Internship</option>
+                      <option value="Full-time">Full-time Position</option>
+                      <option value="Freelance">Freelance / Contract</option>
+                      <option value="Collaboration">Collaboration</option>
+                      <option value="Other">Other Inquiry</option>
+                    </select>
+                  </div>
+                </div>
+
                 <div className="form-group">
-                  <label htmlFor="contact-name">Your Name *</label>
-                  <input
-                    type="text"
-                    id="contact-name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="E.g., John Doe"
+                  <label htmlFor="contact-message">Job Details / Message *</label>
+                  <textarea
+                    id="contact-message"
+                    rows={4}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder="Share details about the role, tech stack, or project..."
                     required
                     disabled={status === 'sending'}
                   />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="contact-company">Company / Organization</label>
-                  <input
-                    type="text"
-                    id="contact-company"
-                    value={company}
-                    onChange={(e) => setCompany(e.target.value)}
-                    placeholder="E.g., Indie Studio"
-                    disabled={status === 'sending'}
-                  />
-                </div>
-              </div>
 
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="contact-email">Work Email *</label>
-                  <input
-                    type="email"
-                    id="contact-email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="name@company.com"
-                    required
-                    disabled={status === 'sending'}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="contact-opportunity">Opportunity Type</label>
-                  <select
-                    id="contact-opportunity"
-                    value={opportunityType}
-                    onChange={(e) => setOpportunityType(e.target.value)}
-                    disabled={status === 'sending'}
-                  >
-                    <option value="Internship">Internship</option>
-                    <option value="Full-time">Full-time Position</option>
-                    <option value="Freelance">Freelance / Contract</option>
-                    <option value="Collaboration">Collaboration</option>
-                    <option value="Other">Other Inquiry</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="contact-message">Job Details / Message *</label>
-                <textarea
-                  id="contact-message"
-                  rows={4}
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  placeholder="Share details about the role, tech stack, or project..."
-                  required
+                <button
+                  type="submit"
+                  className="submit-btn"
                   disabled={status === 'sending'}
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="submit-btn"
-                disabled={status === 'sending'}
-                style={{ width: '100%', display: 'block', textAlign: 'center' }}
-              >
-                {status === 'sending' ? 'Sending Request...' : 'Submit Inquiry'}
-              </button>
-            </form>
-          )}
-        </div>
+                  style={{ width: '100%', display: 'block', textAlign: 'center' }}
+                >
+                  {status === 'sending' ? 'Sending Request...' : 'Submit Inquiry'}
+                </button>
+              </form>
+            )}
+          </div>
+        )}
       </div>
     </section>
   )
