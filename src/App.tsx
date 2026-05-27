@@ -532,7 +532,7 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
 
           <div className="video-embed-container">
             <iframe
-              src="https://www.youtube.com/embed/0qC3WmC_r2w"
+              src="https://www.youtube.com/embed/_1e9ZaPOxKw"
               title="Unifire2D Gameplay Demo"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
@@ -560,7 +560,7 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
 
             <a
               className="project-btn youtube-btn"
-              href="https://youtu.be/0qC3WmC_r2w"
+              href="https://youtu.be/_1e9ZaPOxKw"
               target="_blank"
             >
               <span>Open on YouTube</span>
@@ -712,7 +712,7 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
 
           <div className="video-embed-container">
             <iframe
-              src="https://www.youtube.com/embed/TOUzaXFUPto"
+              src="https://www.youtube.com/embed/4xNxysfBVFM"
               title="VectoArena Gameplay Demo"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
               allowFullScreen
@@ -740,7 +740,7 @@ function ProjectPage({ title, onBack }: ProjectPageProps) {
 
             <a
               className="project-btn youtube-btn"
-              href="https://youtu.be/TOUzaXFUPto"
+              href="https://youtu.be/4xNxysfBVFM"
               target="_blank"
             >
               <span>Open on YouTube</span>
