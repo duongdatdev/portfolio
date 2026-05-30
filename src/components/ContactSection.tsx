@@ -84,8 +84,8 @@ export function ContactSection() {
         <div className="contact-info">
           <h3>Looking for a Game Developer or Software Engineer?</h3>
           <p>
-            I am actively seeking <strong>Software Engineering internships</strong>, 
-            <strong> Unity Gameplay Programmer</strong> roles, or interesting development collaborations. 
+            I am actively seeking <strong>Software Engineering internships</strong>,
+            <strong> Unity Gameplay Programmer</strong> roles, or interesting development collaborations.
             If you are a recruiter, tech lead, or founder, let's connect!
           </p>
           <div className="contact-details">
