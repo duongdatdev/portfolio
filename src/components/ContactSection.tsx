@@ -101,7 +101,7 @@ export function ContactSection() {
           <div className="contact-actions" style={{ marginTop: '28px' }}>
             <a
               className="resume-link boxed"
-              href="/resume/resume.pdf"
+              href="/resume/CV-GameDeveloper-DuongBaoDat.pdf"
               target="_blank"
               rel="noopener noreferrer"
               style={{

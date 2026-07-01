@@ -116,7 +116,7 @@ function App() {
             </a>
             <a
               className="resume-link"
-              href="/resume/resume.pdf"
+              href="/resume/CV-GameDeveloper-DuongBaoDat.pdf"
               target="_blank"
               rel="noopener noreferrer"
             >
