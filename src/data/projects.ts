@@ -154,7 +154,7 @@ export const projects: ProjectData[] = [
       'Web3: Reown AppKit, Thirdweb, ethers',
     ],
     youtubeEmbed: {
-      src: 'https://www.youtube.com/embed/4xNxysfBVFM',
+      src: 'https://www.youtube.com/embed/NulYy4pIOrE',
       title: 'VectoArena Gameplay Demo',
     },
     demoDescription:
@@ -172,7 +172,7 @@ export const projects: ProjectData[] = [
       },
       {
         label: 'Open on YouTube',
-        url: 'https://youtu.be/4xNxysfBVFM',
+        url: 'https://youtu.be/NulYy4pIOrE',
         className: 'project-btn youtube-btn',
       },
     ],
