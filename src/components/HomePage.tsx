@@ -61,6 +61,38 @@ export function HomePage({
   onNavigateToAllProjects,
   motionEnabled,
 }: HomePageProps) {
+  const [activeSection, setActiveSection] = React.useState<string>('about')
+
+  React.useEffect(() => {
+    const sectionIds = [
+      'about',
+      'experience',
+      'projects-section',
+      'education',
+      'skills',
+      'contact',
+    ]
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + 220
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const id = sectionIds[i]
+        const element = document.getElementById(id)
+        if (element) {
+          const top = element.offsetTop
+          if (scrollPosition >= top) {
+            setActiveSection(id)
+            break
+          }
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault()
     const target = document.querySelector(href)
@@ -73,22 +105,27 @@ export function HomePage({
     <>
       <nav className="quick-nav" aria-label="Page navigation">
         <div className="quick-nav-inner">
-          {navLinks.map((link, idx) => (
-            <React.Fragment key={link.href}>
-              {idx > 0 && (
-                <span className="quick-nav-divider" aria-hidden="true">
-                  •
-                </span>
-              )}
-              <a
-                href={link.href}
-                className="quick-nav-link"
-                onClick={(e) => handleNavClick(e, link.href)}
-              >
-                {link.label}
-              </a>
-            </React.Fragment>
-          ))}
+          {navLinks.map((link, idx) => {
+            const sectionId = link.href.replace('#', '')
+            const isActive = activeSection === sectionId
+            return (
+              <React.Fragment key={link.href}>
+                {idx > 0 && (
+                  <span className="quick-nav-divider" aria-hidden="true">
+                    •
+                  </span>
+                )}
+                <a
+                  href={link.href}
+                  className={`quick-nav-link ${isActive ? 'active' : ''}`}
+                  onClick={(e) => handleNavClick(e, link.href)}
+                  aria-current={isActive ? 'true' : undefined}
+                >
+                  {link.label}
+                </a>
+              </React.Fragment>
+            )
+          })}
         </div>
       </nav>
 
@@ -102,10 +139,8 @@ export function HomePage({
             real-time games.
           </p>
           <p>
-            I focus on <strong>clean architecture</strong>, problem-solving, and
-            high-performance code across <strong>C# / Unity</strong>,{' '}
-            <strong>TypeScript / WebGL</strong>, <strong>Java</strong>, and{' '}
-            <strong>backend systems</strong>.
+            I focus on clean architecture, problem-solving, and high-performance
+            code across C# / Unity, TypeScript / WebGL, Java, and backend systems.
           </p>
         </div>
       </section>
