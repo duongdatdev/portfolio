@@ -33,6 +33,14 @@ const experience = {
   ],
 }
 
+const displayProjects = [
+  ...projects.filter((project) => project.slug === 'vectoarena'),
+  ...projects.filter((project) => project.slug === 'unifire2d'),
+  ...projects.filter(
+    (project) => !['vectoarena', 'unifire2d'].includes(project.slug),
+  ),
+]
+
 type HomePageProps = {
   onSelectProject: (project: string, slug: string) => void
   motionEnabled: boolean
@@ -99,7 +107,7 @@ export function HomePage({ onSelectProject, motionEnabled }: HomePageProps) {
       <section className="section-block">
         <h2>Game Programming</h2>
         <div className="project-grid">
-          {projects.map((project) => (
+          {displayProjects.map((project) => (
             <a
               key={project.slug}
               className="project-card"
@@ -141,7 +149,7 @@ export function HomePage({ onSelectProject, motionEnabled }: HomePageProps) {
       </section>
 
       <section className="section-block">
-        <h2>Educations</h2>
+        <h2>Education</h2>
         <div className="education-grid">
           {education.map((item) => (
             <article className="info-card" key={item.school}>
