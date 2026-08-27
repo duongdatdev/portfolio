@@ -15,8 +15,8 @@ export type ProjectData = {
   meta: string
   role: string
   shortDescription: string
-  card: { imageSrc: string; videoSrc: string; alt: string }
-  hero: { imageSrc: string; videoSrc: string; alt: string }
+  card: { imageSrc: string; videoSrc?: string; alt: string }
+  hero: { imageSrc: string; videoSrc?: string; alt: string }
   about: string[]
   info: string[]
   youtubeEmbed?: { src: string; title: string }
@@ -216,12 +216,10 @@ export const projects: ProjectData[] = [
       'A Minecraft-inspired voxel sandbox prototype with procedural terrain, chunk loading, mining, building, crafting, mobs, and survival systems.',
     card: {
       imageSrc: '/projects/voxel-sandbox-gameplay.png',
-      videoSrc: '/projects/voxel-sandbox-gameplay.mp4',
       alt: 'Voxel Sandbox Unity gameplay',
     },
     hero: {
       imageSrc: '/projects/voxel-sandbox-world.png',
-      videoSrc: '/projects/voxel-sandbox-gameplay.mp4',
       alt: 'Voxel Sandbox Unity world',
     },
     about: [
@@ -319,12 +317,10 @@ export const projects: ProjectData[] = [
       'An online Gomoku game with rooms, realtime moves, in-room chat, leaderboards, match history, and authentication.',
     card: {
       imageSrc: '/projects/caro-game-board.png',
-      videoSrc: '/projects/caro-gameplay.mp4',
       alt: 'Caro Game Web board',
     },
     hero: {
       imageSrc: '/projects/caro-game-board.png',
-      videoSrc: '/projects/caro-gameplay.mp4',
       alt: 'Caro Game Web board',
     },
     about: [

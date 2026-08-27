@@ -1,3 +1,4 @@
+import { useLayoutEffect, useRef } from 'react'
 import { BackIcon, ExternalIcon } from './Icons'
 import { ProjectMedia } from './ProjectMedia'
 import { getProjectByTitle } from '../data/projects'
@@ -5,10 +6,16 @@ import { getProjectByTitle } from '../data/projects'
 type ProjectPageProps = {
   title: string
   onBack: () => void
+  motionEnabled: boolean
 }
 
-export function ProjectPage({ title, onBack }: ProjectPageProps) {
+export function ProjectPage({ title, onBack, motionEnabled }: ProjectPageProps) {
+  const headingRef = useRef<HTMLHeadingElement>(null)
   const project = getProjectByTitle(title)
+
+  useLayoutEffect(() => {
+    headingRef.current?.focus({ preventScroll: true })
+  }, [title])
 
   if (!project) {
     return null
@@ -28,8 +35,9 @@ export function ProjectPage({ title, onBack }: ProjectPageProps) {
           alt={project.hero.alt}
           className="project-hero-image"
           autoPlayOnce={true}
+          motionEnabled={motionEnabled}
         />
-        <h2>{project.title}</h2>
+        <h1 ref={headingRef} tabIndex={-1}>{project.title}</h1>
         <div className="detail-grid">
           <article className="info-card">
             <h3>About</h3>
@@ -54,6 +62,7 @@ export function ProjectPage({ title, onBack }: ProjectPageProps) {
             className="code-link"
             href={project.codeLink.url}
             target="_blank"
+            rel="noopener noreferrer"
           >
             <span>{project.codeLink.label}</span>
             <ExternalIcon />
@@ -71,6 +80,8 @@ export function ProjectPage({ title, onBack }: ProjectPageProps) {
                 title={project.youtubeEmbed.title}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
               ></iframe>
             </div>
           </>
@@ -84,6 +95,7 @@ export function ProjectPage({ title, onBack }: ProjectPageProps) {
                 className={link.className}
                 href={link.url}
                 target="_blank"
+                rel="noopener noreferrer"
               >
                 <span>{link.label}</span>
                 <ExternalIcon />

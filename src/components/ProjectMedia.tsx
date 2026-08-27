@@ -7,6 +7,7 @@ type ProjectMediaProps = {
   className?: string
   playOnHover?: boolean
   autoPlayOnce?: boolean
+  motionEnabled?: boolean
 }
 
 export function ProjectMedia({
@@ -16,13 +17,17 @@ export function ProjectMedia({
   className = 'project-image screenshot-scene',
   playOnHover = true,
   autoPlayOnce = false,
+  motionEnabled = true,
 }: ProjectMediaProps) {
-  const [videoError, setVideoError] = useState(false)
+  const [failedVideoSrc, setFailedVideoSrc] = useState<string | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const canPlayVideo = Boolean(
+    motionEnabled && videoSrc && failedVideoSrc !== videoSrc,
+  )
 
   useEffect(() => {
-    if (!autoPlayOnce) return
+    if (!autoPlayOnce || !canPlayVideo) return
 
     const video = videoRef.current
     if (!video) return
@@ -36,10 +41,10 @@ export function ProjectMedia({
     }, 2000)
 
     return () => clearTimeout(timer)
-  }, [autoPlayOnce, videoSrc])
+  }, [autoPlayOnce, canPlayVideo, videoSrc])
 
   useEffect(() => {
-    if (!playOnHover) return
+    if (!playOnHover || !canPlayVideo) return
 
     const video = videoRef.current
     const container = containerRef.current
@@ -65,11 +70,11 @@ export function ProjectMedia({
       hoverTarget.removeEventListener('mouseenter', handleMouseEnter)
       hoverTarget.removeEventListener('mouseleave', handleMouseLeave)
     }
-  }, [videoError, videoSrc, playOnHover])
+  }, [canPlayVideo, videoSrc, playOnHover])
 
   return (
     <div className={className} ref={containerRef}>
-      {videoSrc && !videoError ? (
+      {canPlayVideo && videoSrc ? (
         <video
           ref={videoRef}
           src={videoSrc}
@@ -78,7 +83,9 @@ export function ProjectMedia({
           loop
           muted
           playsInline
-          onError={() => setVideoError(true)}
+          preload="metadata"
+          aria-label={alt}
+          onError={() => setFailedVideoSrc(videoSrc)}
         />
       ) : (
         <img src={imageSrc} alt={alt} />

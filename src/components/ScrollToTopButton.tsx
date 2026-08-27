@@ -1,7 +1,11 @@
 import { useState, useEffect } from 'react'
 import { ChevronUpIcon } from './Icons'
 
-export function ScrollToTopButton() {
+type ScrollToTopButtonProps = {
+  motionEnabled?: boolean
+}
+
+export function ScrollToTopButton({ motionEnabled = true }: ScrollToTopButtonProps) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -14,12 +18,12 @@ export function ScrollToTopButton() {
   }, [])
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    window.scrollTo({ top: 0, behavior: motionEnabled ? 'smooth' : 'instant' })
   }
 
   return (
     <button
-      className={`scroll-to-top${visible ? ' visible' : ''}`}
+      className={`scroll-to-top${visible ? ' visible' : ''}${!motionEnabled ? ' motion-disabled' : ''}`}
       onClick={scrollToTop}
       aria-label="Scroll to top"
       title="Back to top"

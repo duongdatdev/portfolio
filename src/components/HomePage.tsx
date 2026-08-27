@@ -34,16 +34,17 @@ const experience = {
 }
 
 type HomePageProps = {
-  onSelectProject: (project: string) => void
+  onSelectProject: (project: string, slug: string) => void
+  motionEnabled: boolean
 }
 
-export function HomePage({ onSelectProject }: HomePageProps) {
+export function HomePage({ onSelectProject, motionEnabled }: HomePageProps) {
   return (
     <>
       <section className="intro" id="top">
         <ProfilePhoto />
         <div className="intro-copy">
-          <h2>Hi, I'm Dat</h2>
+          <h1>Hi, I'm Dat</h1>
           <p>
             I am an Information Technology engineering student majoring in{' '}
             <strong>Software Engineering</strong>, passionate about game
@@ -99,16 +100,31 @@ export function HomePage({ onSelectProject }: HomePageProps) {
         <h2>Game Programming</h2>
         <div className="project-grid">
           {projects.map((project) => (
-            <button
+            <a
               key={project.slug}
               className="project-card"
-              type="button"
-              onClick={() => onSelectProject(project.title)}
+              href={`#${project.slug}`}
+              data-project-slug={project.slug}
+              onClick={(event) => {
+                if (
+                  event.button !== 0 ||
+                  event.metaKey ||
+                  event.ctrlKey ||
+                  event.shiftKey ||
+                  event.altKey
+                ) {
+                  return
+                }
+
+                event.preventDefault()
+                onSelectProject(project.title, project.slug)
+              }}
             >
               <ProjectMedia
                 imageSrc={project.card.imageSrc}
                 videoSrc={project.card.videoSrc}
                 alt={project.card.alt}
+                motionEnabled={motionEnabled}
               />
               <div className="project-card-body">
                 <div className="project-meta">{project.meta}</div>
@@ -119,7 +135,7 @@ export function HomePage({ onSelectProject }: HomePageProps) {
                 <p>{project.role}</p>
                 <p>{project.shortDescription}</p>
               </div>
-            </button>
+            </a>
           ))}
         </div>
       </section>

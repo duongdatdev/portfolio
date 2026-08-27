@@ -110,14 +110,6 @@ export function StarfieldBackground({ isWarping = false, motionEnabled = true }:
           }
           alpha = Math.max(0, Math.min(1, alpha))
 
-          if (!motionEnabled) {
-            // Only draw a subset of stars (approx 40%) and make them much dimmer (35% alpha)
-            if (i % 5 !== 0 && i % 5 !== 2) {
-              continue
-            }
-            alpha *= 0.35
-          }
-
           if (currentSpeedMultiplier > 1.2) {
             // Draw as a streak from previous position
             const prevZ = star.z + star.speed * currentSpeedMultiplier
@@ -183,6 +175,7 @@ export function StarfieldBackground({ isWarping = false, motionEnabled = true }:
   return (
     <canvas
       ref={canvasRef}
+      aria-hidden="true"
       style={{
         position: 'fixed',
         top: 0,
