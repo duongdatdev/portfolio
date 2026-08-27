@@ -5,7 +5,10 @@ interface StarfieldBackgroundProps {
   motionEnabled?: boolean
 }
 
-export function StarfieldBackground({ isWarping = false, motionEnabled = true }: StarfieldBackgroundProps) {
+export function StarfieldBackground({
+  isWarping = false,
+  motionEnabled = true,
+}: StarfieldBackgroundProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const isWarpingRef = useRef(isWarping)
 
@@ -29,20 +32,37 @@ export function StarfieldBackground({ isWarping = false, motionEnabled = true }:
     let currentCenterX = width / 2
     let currentCenterY = height / 2
 
-    // Star properties
-    const numStars = 800
-    const stars: { x: number; y: number; z: number; size: number; speed: number }[] = []
-
-    for (let i = 0; i < numStars; i++) {
-      const z = Math.random() * width
-      stars.push({
-        x: (Math.random() * width - width / 2) * (z / 128.0),
-        y: (Math.random() * height - height / 2) * (z / 128.0),
-        z: z,
-        size: Math.random() * 1.5 + 0.8,
-        speed: Math.random() * 1.2 + 0.3,
-      })
+    // Adapt particle count: reduced on mobile (<600px) and tablets (<900px), full on desktop
+    const getStarCount = (screenWidth: number) => {
+      if (screenWidth <= 600) return 180 // Fewer stars on mobile so background is clean and text stands out
+      if (screenWidth <= 900) return 380
+      return 800 // Full cosmic starfield on desktop
     }
+
+    let numStars = getStarCount(width)
+    let stars: {
+      x: number
+      y: number
+      z: number
+      size: number
+      speed: number
+    }[] = []
+
+    const initStars = (count: number) => {
+      stars = []
+      for (let i = 0; i < count; i++) {
+        const z = Math.random() * width
+        stars.push({
+          x: (Math.random() * width - width / 2) * (z / 128.0),
+          y: (Math.random() * height - height / 2) * (z / 128.0),
+          z: z,
+          size: Math.random() * 1.5 + 0.8,
+          speed: Math.random() * 1.2 + 0.3,
+        })
+      }
+    }
+
+    initStars(numStars)
 
     let currentSpeedMultiplier = 1.0
 
@@ -54,7 +74,8 @@ export function StarfieldBackground({ isWarping = false, motionEnabled = true }:
 
         // Smoothly interpolate speed multiplier for warp transition
         const targetSpeedMultiplier = isWarpingRef.current ? 22.0 : 1.0
-        currentSpeedMultiplier += (targetSpeedMultiplier - currentSpeedMultiplier) * 0.08
+        currentSpeedMultiplier +=
+          (targetSpeedMultiplier - currentSpeedMultiplier) * 0.08
       } else {
         currentCenterX = width / 2
         currentCenterY = height / 2
@@ -64,22 +85,25 @@ export function StarfieldBackground({ isWarping = false, motionEnabled = true }:
       ctx.fillStyle = '#10130f' // matching var(--bg)
       ctx.fillRect(0, 0, width, height)
 
-      // Add a very subtle gradient overlay
+      // Add a subtle radial gradient glow in the center
       const gradient = ctx.createRadialGradient(
         width / 2,
         height / 2,
         10,
         width / 2,
         height / 2,
-        Math.max(width, height) / 1.1
+        Math.max(width, height) / 1.1,
       )
-      gradient.addColorStop(0, 'rgba(180, 231, 173, 0.05)') // subtle mint
+      gradient.addColorStop(0, 'rgba(180, 231, 173, 0.05)')
       gradient.addColorStop(1, 'rgba(16, 19, 15, 0)')
       ctx.fillStyle = gradient
       ctx.fillRect(0, 0, width, height)
 
       // Draw stars
-      for (let i = 0; i < numStars; i++) {
+      const isMobile = width <= 600
+      const maxStarSize = isMobile ? 3.0 : 4.5
+
+      for (let i = 0; i < stars.length; i++) {
         const star = stars[i]
 
         if (motionEnabled) {
@@ -98,20 +122,24 @@ export function StarfieldBackground({ isWarping = false, motionEnabled = true }:
         const py = star.y * k + currentCenterY
 
         if (px >= 0 && px <= width && py >= 0 && py <= height) {
-          // Scale star size: add a base size so far-away stars are visible, and clamp max size
-          const size = Math.min(star.size * k + 0.6, 4.5)
+          // Scale star size
+          const size = Math.min(star.size * k + 0.6, maxStarSize)
 
           // Smoothly fade in when born (far away) and fade out when passing by (close)
           let alpha = 1.0
           if (star.z < 80) {
-            alpha = star.z / 80 // fade out as it gets very close
+            alpha = star.z / 80
           } else if (star.z > width - 150) {
-            alpha = (width - star.z) / 150 // fade in when spawning far away
+            alpha = (width - star.z) / 150
           }
           alpha = Math.max(0, Math.min(1, alpha))
 
+          if (isMobile) {
+            alpha *= 0.85 // slightly softer star opacity on mobile
+          }
+
           if (currentSpeedMultiplier > 1.2) {
-            // Draw as a streak from previous position
+            // Draw as a streak during warp transition
             const prevZ = star.z + star.speed * currentSpeedMultiplier
             const prevK = 128.0 / prevZ
             const ppx = star.x * prevK + currentCenterX
@@ -127,7 +155,7 @@ export function StarfieldBackground({ isWarping = false, motionEnabled = true }:
           } else {
             ctx.beginPath()
             ctx.arc(px, py, size, 0, Math.PI * 2)
-            ctx.fillStyle = `rgba(180, 231, 173, ${alpha})` // mint color '#b4e7ad'
+            ctx.fillStyle = `rgba(180, 231, 173, ${alpha})`
             ctx.fill()
           }
         }
@@ -153,6 +181,13 @@ export function StarfieldBackground({ isWarping = false, motionEnabled = true }:
       targetCenterY = height / 2
       currentCenterX = width / 2
       currentCenterY = height / 2
+
+      const newCount = getStarCount(width)
+      if (newCount !== numStars) {
+        numStars = newCount
+        initStars(numStars)
+      }
+
       if (!motionEnabled) {
         draw()
       }
