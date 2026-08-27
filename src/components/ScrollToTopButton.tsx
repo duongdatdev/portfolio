@@ -10,7 +10,7 @@ export function ScrollToTopButton({ motionEnabled = true }: ScrollToTopButtonPro
 
   useEffect(() => {
     const handleScroll = () => {
-      setVisible(window.scrollY > 200)
+      setVisible(window.scrollY > 150)
     }
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
@@ -20,7 +20,6 @@ export function ScrollToTopButton({ motionEnabled = true }: ScrollToTopButtonPro
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: motionEnabled ? 'smooth' : 'instant' })
   }
-
   return (
     <button
       className={`scroll-to-top${visible ? ' visible' : ''}${!motionEnabled ? ' motion-disabled' : ''}`}
