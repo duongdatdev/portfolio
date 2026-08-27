@@ -5,6 +5,7 @@ import { ContactSection } from './components/ContactSection'
 import { ScrollToTopButton } from './components/ScrollToTopButton'
 import { HomePage } from './components/HomePage'
 import { ProjectPage } from './components/ProjectPage'
+import { AllProjectsPage } from './components/AllProjectsPage'
 import {
   LinkedinIcon,
   GithubIcon,
@@ -17,8 +18,14 @@ import { slugToTitle, titleToSlug } from './data/projects'
 
 const DEFAULT_PAGE_TITLE = 'Duong Bao Dat | Game Developer Portfolio'
 
+const isAllProjectsHash = (hash: string) =>
+  hash === 'projects' || hash === 'all-projects'
+
 const getProjectFromHash = () => {
   const hash = window.location.hash.replace('#', '')
+  if (isAllProjectsHash(hash)) {
+    return null
+  }
   return slugToTitle(hash)
 }
 
@@ -32,11 +39,14 @@ const getInitialMotionPreference = () => {
 }
 
 function App() {
+  const initialHash = window.location.hash.replace('#', '')
   const [selectedProject, setSelectedProject] = useState<string | null>(getProjectFromHash)
+  const [isAllProjects, setIsAllProjects] = useState(isAllProjectsHash(initialHash))
   const [isWarping, setIsWarping] = useState(false)
   const [motionEnabled, setMotionEnabled] = useState(getInitialMotionPreference)
   const [initialWarp, setInitialWarp] = useState(motionEnabled)
   const selectedProjectRef = useRef(selectedProject)
+  const isAllProjectsRef = useRef(isAllProjects)
   const homeScrollPositionRef = useRef(0)
   const projectOriginSlugRef = useRef<string | null>(null)
   const shouldRestoreHomeRef = useRef(false)
@@ -44,17 +54,28 @@ function App() {
 
   useEffect(() => {
     const handleHashChange = () => {
-      const nextProject = getProjectFromHash()
-      shouldRestoreHomeRef.current = Boolean(selectedProjectRef.current && !nextProject)
+      const hash = window.location.hash.replace('#', '')
+      const nextIsAllProjects = isAllProjectsHash(hash)
+      const nextProject = nextIsAllProjects ? null : slugToTitle(hash)
+
+      shouldRestoreHomeRef.current = Boolean(
+        (selectedProjectRef.current || isAllProjectsRef.current) &&
+          !nextProject &&
+          !nextIsAllProjects,
+      )
+
       selectedProjectRef.current = nextProject
+      isAllProjectsRef.current = nextIsAllProjects
       setSelectedProject(nextProject)
+      setIsAllProjects(nextIsAllProjects)
     }
+
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
   }, [])
 
   useLayoutEffect(() => {
-    if (selectedProject) {
+    if (selectedProject || isAllProjects) {
       window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
       return
     }
@@ -76,13 +97,17 @@ function App() {
           ?.focus({ preventScroll: true })
       })
     }
-  }, [selectedProject])
+  }, [selectedProject, isAllProjects])
 
   useEffect(() => {
-    document.title = selectedProject
-      ? `${selectedProject} | Duong Bao Dat`
-      : DEFAULT_PAGE_TITLE
-  }, [selectedProject])
+    if (selectedProject) {
+      document.title = `${selectedProject} | Duong Bao Dat`
+    } else if (isAllProjects) {
+      document.title = 'All Projects | Duong Bao Dat'
+    } else {
+      document.title = DEFAULT_PAGE_TITLE
+    }
+  }, [selectedProject, isAllProjects])
 
   useEffect(() => {
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
@@ -113,7 +138,9 @@ function App() {
   }
 
   const handleSelectProject = (title: string, slug: string) => {
-    homeScrollPositionRef.current = window.scrollY
+    if (!isAllProjects && !selectedProject) {
+      homeScrollPositionRef.current = window.scrollY
+    }
     projectOriginSlugRef.current = slug
     canReturnWithHistoryRef.current = true
 
@@ -134,6 +161,21 @@ function App() {
     }
   }
 
+  const handleNavigateToAllProjects = () => {
+    homeScrollPositionRef.current = window.scrollY
+    canReturnWithHistoryRef.current = true
+
+    if (motionEnabled) {
+      setIsWarping(true)
+      setTimeout(() => {
+        window.location.hash = 'projects'
+        setIsWarping(false)
+      }, 800)
+    } else {
+      window.location.hash = 'projects'
+    }
+  }
+
   const handleBack = () => {
     const navigateHome = () => {
       if (canReturnWithHistoryRef.current) {
@@ -147,7 +189,9 @@ function App() {
         )
         shouldRestoreHomeRef.current = true
         selectedProjectRef.current = null
+        isAllProjectsRef.current = false
         setSelectedProject(null)
+        setIsAllProjects(false)
       }
     }
 
@@ -164,16 +208,26 @@ function App() {
 
   return (
     <>
-      <StarfieldBackground isWarping={isWarping || initialWarp} motionEnabled={motionEnabled} />
-      <main className={`portfolio ${isWarping ? 'warp-active' : ''} ${!motionEnabled ? 'motion-disabled' : ''}`}>
-        <header className="site-header" key={selectedProject ? 'project' : 'home'}>
+      <StarfieldBackground
+        isWarping={isWarping || initialWarp}
+        motionEnabled={motionEnabled}
+      />
+      <main
+        className={`portfolio ${isWarping ? 'warp-active' : ''} ${
+          !motionEnabled ? 'motion-disabled' : ''
+        }`}
+      >
+        <header
+          className="site-header"
+          key={selectedProject ? 'project' : isAllProjects ? 'all-projects' : 'home'}
+        >
           <a
             className="brand"
             href="#top"
             aria-label="Duong Bao Dat home"
             onClick={(event) => {
               event.preventDefault()
-              if (selectedProject) {
+              if (selectedProject || isAllProjects) {
                 handleBack()
               } else {
                 window.scrollTo({
@@ -185,16 +239,31 @@ function App() {
             }}
           >
             <strong>Duong Bao Dat</strong>
-            <span>Game Developer</span>
+            <span>Software Engineer & Game Developer</span>
           </a>
           <nav className="socials" aria-label="Portfolio links and settings">
-            <a href="https://www.linkedin.com/in/duongdatdev" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://www.linkedin.com/in/duongdatdev"
+              aria-label="LinkedIn"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <LinkedinIcon />
             </a>
-            <a href="https://github.com/duongdatdev" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://github.com/duongdatdev"
+              aria-label="GitHub"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <GithubIcon />
             </a>
-            <a href="https://duongdat-dev.itch.io" aria-label="itch.io" target="_blank" rel="noopener noreferrer">
+            <a
+              href="https://duongdat-dev.itch.io"
+              aria-label="itch.io"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <ItchIcon />
             </a>
             <a
@@ -210,7 +279,11 @@ function App() {
               type="button"
               className="motion-toggle"
               onClick={toggleMotion}
-              title={motionEnabled ? "Disable Background Motion" : "Enable Background Motion"}
+              title={
+                motionEnabled
+                  ? 'Disable Background Motion'
+                  : 'Enable Background Motion'
+              }
               aria-label="Motion effects"
               aria-pressed={motionEnabled}
             >
@@ -225,9 +298,19 @@ function App() {
             onBack={handleBack}
             motionEnabled={motionEnabled}
           />
+        ) : isAllProjects ? (
+          <AllProjectsPage
+            onSelectProject={handleSelectProject}
+            onBack={handleBack}
+            motionEnabled={motionEnabled}
+          />
         ) : (
           <>
-            <HomePage onSelectProject={handleSelectProject} motionEnabled={motionEnabled} />
+            <HomePage
+              onSelectProject={handleSelectProject}
+              onNavigateToAllProjects={handleNavigateToAllProjects}
+              motionEnabled={motionEnabled}
+            />
             <ContactSection />
           </>
         )}
