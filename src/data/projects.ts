@@ -12,6 +12,7 @@ export type ProjectSection = {
 export type ProjectData = {
   title: string
   slug: string
+  category?: 'Unity' | 'WebGL' | 'Java' | 'Web'
   meta: string
   role: string
   shortDescription: string
@@ -28,8 +29,92 @@ export type ProjectData = {
 
 export const projects: ProjectData[] = [
   {
+    title: 'VectoArena',
+    slug: 'vectoarena',
+    category: 'Unity',
+    meta: 'Solo | Unity | Colyseus | Web3',
+    role: 'Unity Multiplayer Developer',
+    shortDescription:
+      'A real-time multiplayer arena game with combat, progression, collectible VEC rewards, cosmetic skins, and wallet features.',
+    card: {
+      imageSrc: '/projects/vectoarena-gameplay.png',
+      videoSrc: '/projects/vectoarena-gameplay.mp4',
+      alt: 'VectoArena arena gameplay',
+    },
+    hero: {
+      imageSrc: '/projects/vectoarena-menu.png',
+      videoSrc: '/projects/vectoarena-gameplay.mp4',
+      alt: 'VectoArena main menu',
+    },
+    about: [
+      'VectoArena is a top-down real-time multiplayer arena game built with Unity 6 and an authoritative Colyseus/Node.js backend.',
+      'Players enter battle or Play to Airdrop matches, scavenge weapons and medical kits, survive a shrinking zone, earn VEC rewards, equip cosmetic skins, and connect a wallet for NFT features.',
+    ],
+    info: [
+      'Role: Full-stack Multiplayer Game Developer',
+      'Engine: Unity 6 / URP',
+      'Client: C#, UI Toolkit, Input System, WebGL',
+      'Server: TypeScript, Colyseus, Express, Prisma',
+      'Web3: Reown AppKit, Thirdweb, ethers',
+    ],
+    youtubeEmbed: {
+      src: 'https://www.youtube.com/embed/NulYy4pIOrE',
+      title: 'VectoArena Gameplay Demo',
+    },
+    demoDescription:
+      'Watch a short gameplay demo showing multiplayer arena combat, bot behavior, zone shrinking, weapon pickups, and real-time synchronization.',
+    actionLinks: [
+      {
+        label: 'View Client Code',
+        url: 'https://github.com/duongdatdev/VectoArena',
+        className: 'project-btn code-btn',
+      },
+      {
+        label: 'View Server Code',
+        url: 'https://github.com/duongdatdev/vectoarena_server',
+        className: 'project-btn code-btn',
+      },
+      {
+        label: 'Open on YouTube',
+        url: 'https://youtu.be/NulYy4pIOrE',
+        className: 'project-btn youtube-btn',
+      },
+    ],
+    sections: [
+      {
+        title: 'Game Loop and Arena Combat',
+        paragraphs: [
+          'VectoArena is a compact multiplayer survival arena where players spawn into a match, collect weapons or medical kits, fight using ranged and melee attacks, and remain inside a progressively shrinking danger zone. The live HUD communicates health, ammo, pickups, kill feed activity, the minimap, and end-of-match results.',
+          'The game supports a standard battle room and a gated Play to Airdrop room. Matches can fill empty positions with bots, allowing the full combat and reward loop to be demonstrated while human players join, disconnect, or reconnect.',
+        ],
+      },
+      {
+        title: 'Authoritative Multiplayer Backend',
+        paragraphs: [
+          'The Unity client communicates with Colyseus rooms over WebSockets for synchronized movement, shooting, melee attacks, pickups, zone state, kill feed events, and match results. Server-side gameplay logic validates attack distance and cooldowns, pickup interaction, zone damage, reconnect windows, match completion, and reward recording instead of trusting client actions.',
+          'Match balance is data-driven: a runtime JSON configuration controls four-player rooms, bot fill, initial item spawns, weapon damage, firing rates, ammo, healing, and pickup distances. The backend persists matches, participants, kills, currency transactions, and loadouts through Prisma and PostgreSQL.',
+        ],
+      },
+      {
+        title: 'Progression, Cosmetics, and Web3',
+        paragraphs: [
+          'Beyond a match, the player flow includes registration and login, profile and currency balances, XP progression, transaction history, a cosmetic store, and equippable character skins. Normal cosmetic ownership and NFT-backed skins share one inventory experience in the client while the server verifies the ownership rules.',
+          'Wallet linking uses a short-lived nonce and a signed verification message. The Web3 flow can verify VEC token deposits, synchronize NFT skin ownership, and confirm NFT purchase transactions through configured blockchain RPC providers, with the server retaining authority over credited balances and unlocked cosmetics.',
+        ],
+      },
+      {
+        title: 'Client Experience and Architecture',
+        paragraphs: [
+          'The Unity 6 client uses URP, UI Toolkit, TextMesh Pro, and the Input System across three core scenes: authentication, the home/store and matchmaking interface, and the gameplay arena. It includes wallet connection feedback, inventory and skin presentation, settings, audio, matchmaking selection, gameplay HUD, and death/result flow.',
+          'I built the connected gameplay architecture across a C# Unity client and a TypeScript backend: REST APIs for account and inventory actions, Colyseus state synchronization for active matches, Prisma persistence for progression and history, and Web3 services for wallet and NFT interactions. The project targets standalone builds and WebGL, making it suitable for a browser-accessible multiplayer game demo.',
+        ],
+      },
+    ],
+  },
+  {
     title: 'Unifire2D',
     slug: 'unifire2d',
+    category: 'Unity',
     meta: 'Solo | Unity | C#',
     role: 'Unity Gameplay Programmer',
     shortDescription:
@@ -126,90 +211,9 @@ export const projects: ProjectData[] = [
     ],
   },
   {
-    title: 'VectoArena',
-    slug: 'vectoarena',
-    meta: 'Solo | Unity | Colyseus | Web3',
-    role: 'Unity Multiplayer Developer',
-    shortDescription:
-      'A real-time multiplayer arena game with combat, progression, collectible VEC rewards, cosmetic skins, and wallet features.',
-    card: {
-      imageSrc: '/projects/vectoarena-gameplay.png',
-      videoSrc: '/projects/vectoarena-gameplay.mp4',
-      alt: 'VectoArena arena gameplay',
-    },
-    hero: {
-      imageSrc: '/projects/vectoarena-menu.png',
-      videoSrc: '/projects/vectoarena-gameplay.mp4',
-      alt: 'VectoArena main menu',
-    },
-    about: [
-      'VectoArena is a top-down real-time multiplayer arena game built with Unity 6 and an authoritative Colyseus/Node.js backend.',
-      'Players enter battle or Play to Airdrop matches, scavenge weapons and medical kits, survive a shrinking zone, earn VEC rewards, equip cosmetic skins, and connect a wallet for NFT features.',
-    ],
-    info: [
-      'Role: Full-stack Multiplayer Game Developer',
-      'Engine: Unity 6 / URP',
-      'Client: C#, UI Toolkit, Input System, WebGL',
-      'Server: TypeScript, Colyseus, Express, Prisma',
-      'Web3: Reown AppKit, Thirdweb, ethers',
-    ],
-    youtubeEmbed: {
-      src: 'https://www.youtube.com/embed/NulYy4pIOrE',
-      title: 'VectoArena Gameplay Demo',
-    },
-    demoDescription:
-      'Watch a short gameplay demo showing multiplayer arena combat, bot behavior, zone shrinking, weapon pickups, and real-time synchronization.',
-    actionLinks: [
-      {
-        label: 'View Client Code',
-        url: 'https://github.com/duongdatdev/VectoArena',
-        className: 'project-btn code-btn',
-      },
-      {
-        label: 'View Server Code',
-        url: 'https://github.com/duongdatdev/vectoarena_server',
-        className: 'project-btn code-btn',
-      },
-      {
-        label: 'Open on YouTube',
-        url: 'https://youtu.be/NulYy4pIOrE',
-        className: 'project-btn youtube-btn',
-      },
-    ],
-    sections: [
-      {
-        title: 'Game Loop and Arena Combat',
-        paragraphs: [
-          'VectoArena is a compact multiplayer survival arena where players spawn into a match, collect weapons or medical kits, fight using ranged and melee attacks, and remain inside a progressively shrinking danger zone. The live HUD communicates health, ammo, pickups, kill feed activity, the minimap, and end-of-match results.',
-          'The game supports a standard battle room and a gated Play to Airdrop room. Matches can fill empty positions with bots, allowing the full combat and reward loop to be demonstrated while human players join, disconnect, or reconnect.',
-        ],
-      },
-      {
-        title: 'Authoritative Multiplayer Backend',
-        paragraphs: [
-          'The Unity client communicates with Colyseus rooms over WebSockets for synchronized movement, shooting, melee attacks, pickups, zone state, kill feed events, and match results. Server-side gameplay logic validates attack distance and cooldowns, pickup interaction, zone damage, reconnect windows, match completion, and reward recording instead of trusting client actions.',
-          'Match balance is data-driven: a runtime JSON configuration controls four-player rooms, bot fill, initial item spawns, weapon damage, firing rates, ammo, healing, and pickup distances. The backend persists matches, participants, kills, currency transactions, and loadouts through Prisma and PostgreSQL.',
-        ],
-      },
-      {
-        title: 'Progression, Cosmetics, and Web3',
-        paragraphs: [
-          'Beyond a match, the player flow includes registration and login, profile and currency balances, XP progression, transaction history, a cosmetic store, and equippable character skins. Normal cosmetic ownership and NFT-backed skins share one inventory experience in the client while the server verifies the ownership rules.',
-          'Wallet linking uses a short-lived nonce and a signed verification message. The Web3 flow can verify VEC token deposits, synchronize NFT skin ownership, and confirm NFT purchase transactions through configured blockchain RPC providers, with the server retaining authority over credited balances and unlocked cosmetics.',
-        ],
-      },
-      {
-        title: 'Client Experience and Architecture',
-        paragraphs: [
-          'The Unity 6 client uses URP, UI Toolkit, TextMesh Pro, and the Input System across three core scenes: authentication, the home/store and matchmaking interface, and the gameplay arena. It includes wallet connection feedback, inventory and skin presentation, settings, audio, matchmaking selection, gameplay HUD, and death/result flow.',
-          'I built the connected gameplay architecture across a C# Unity client and a TypeScript backend: REST APIs for account and inventory actions, Colyseus state synchronization for active matches, Prisma persistence for progression and history, and Web3 services for wallet and NFT interactions. The project targets standalone builds and WebGL, making it suitable for a browser-accessible multiplayer game demo.',
-        ],
-      },
-    ],
-  },
-  {
     title: 'Voxel Sandbox Unity',
     slug: 'voxel-sandbox',
+    category: 'Unity',
     meta: 'Solo | Unity | C#',
     role: 'Unity Gameplay Programmer',
     shortDescription:
@@ -309,8 +313,229 @@ export const projects: ProjectData[] = [
     ],
   },
   {
+    title: 'Earth 2048',
+    slug: 'earth-2048',
+    category: 'WebGL',
+    meta: 'Solo | TypeScript | PixiJS | Vite',
+    role: 'Frontend & Graphics Developer',
+    shortDescription:
+      'A standalone, high-performance 2048 puzzle game component built with TypeScript and PixiJS, featuring customizable 3x3/4x4/5x5 grid sizes and smooth tile animations.',
+    card: {
+      imageSrc: '/projects/earth-2048.png',
+      alt: 'Earth 2048 PixiJS game preview',
+    },
+    hero: {
+      imageSrc: '/projects/earth-2048.png',
+      alt: 'Earth 2048 PixiJS gameplay preview',
+    },
+    about: [
+      'Earth 2048 is a lightweight, high-performance web game component built with TypeScript and PixiJS.',
+      'It delivers a standalone 2048 puzzle experience with smooth tile sliding animations, grid resizing (3x3, 4x4, 5x5), independent best-score tracking per board size, keyboard & swipe touch input, and clean embeddable architecture without external framework dependencies.',
+    ],
+    info: [
+      'Role: Frontend & Graphics Developer',
+      'Language: TypeScript',
+      'Renderer: PixiJS (WebGL & Canvas)',
+      'Architecture: Framework-agnostic Embeddable Component',
+      'Build Tool: Vite & npm library output',
+    ],
+    codeLink: {
+      label: 'Code - Earth 2048 (PixiJS)',
+      url: 'https://github.com/duongdatdev/2048_pixiJS',
+    },
+    actionLinks: [
+      {
+        label: 'View Source Code',
+        url: 'https://github.com/duongdatdev/2048_pixiJS',
+        className: 'project-btn code-btn',
+      },
+    ],
+    sections: [
+      {
+        title: 'PixiJS Rendering and Smooth Tile Animations',
+        paragraphs: [
+          'The game board uses PixiJS for GPU-accelerated rendering, delivering fluid 60 FPS tile sliding, merging, and popping transitions on both desktop and mobile browsers.',
+          'Visual assets, typography, and tile gradients are dynamically generated directly in canvas/PixiJS containers, eliminating external font or asset download overhead.',
+        ],
+      },
+      {
+        title: 'Dynamic Grid Sizing and Score Persistence',
+        paragraphs: [
+          'Players can switch between 3x3, 4x4, and 5x5 grid layouts. The state manager tracks independent current and high scores for each board dimension in localStorage.',
+          'Safety confirmation dialogs prevent accidental board resets when switching grid dimensions mid-game.',
+        ],
+      },
+      {
+        title: 'Embeddable Component Architecture',
+        paragraphs: [
+          'Designed as a modular, framework-agnostic component with a clean mount/unmount lifecycle API, scoped CSS (.earth-2048), and customizable callbacks (onChange, autoFocus, storageKey) for integration into any host website.',
+        ],
+      },
+      {
+        title: 'What I built',
+        paragraphs: [
+          'I developed the core 2048 matrix math algorithm, tile merge rules, PixiJS scene graph and animation tweens, touch/keyboard input handling, score persistence, and unit tests covering game-over conditions and merge validations.',
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Mini Island 2D',
+    slug: 'miniisland-2d',
+    category: 'Java',
+    meta: 'Solo | Java 17 | WebSocket | Swing/AWT',
+    role: 'Java Gameplay & Network Developer',
+    shortDescription:
+      'A real-time multiplayer 2D top-down game built with Java Swing/AWT and WebSockets, featuring synchronized exploration, wave combat, maze survival, and live chat.',
+    card: {
+      imageSrc: '/projects/miniisland-lobby.png',
+      alt: 'Mini Island 2D multiplayer lobby',
+    },
+    hero: {
+      imageSrc: '/projects/miniisland-gameplay.png',
+      alt: 'Mini Island 2D monster hunt combat gameplay',
+    },
+    about: [
+      'Mini Island 2D is a real-time multiplayer 2D top-down game client and server system built with Java 17, Java Swing/AWT, and WebSockets.',
+      'Players explore a shared island lobby with synchronized movement, chat with overhead speech bubbles, participate in Monster Hunt wave defense combat, race through maze survival challenges, purchase cosmetic skins, and compete on a live global leaderboard.',
+    ],
+    info: [
+      'Role: Java Gameplay & Network Developer',
+      'Language: Java 17',
+      'Graphics: Java Swing / AWT (Custom Sprite Rendering)',
+      'Networking: Java-WebSocket (Real-Time JSON Protocol)',
+      'Build Tool: Apache Maven',
+    ],
+    codeLink: {
+      label: 'Code - Mini Island 2D Client',
+      url: 'https://github.com/duongdatdev/miniisland-2.0',
+    },
+    actionLinks: [
+      {
+        label: 'View Client Code',
+        url: 'https://github.com/duongdatdev/miniisland-2.0',
+        className: 'project-btn code-btn',
+      },
+    ],
+    sections: [
+      {
+        title: 'Multiplayer Island Lobby and Speech Chat',
+        paragraphs: [
+          'The core lobby is a shared open island where players can meet and interact in real time. Player position, direction, and animation states are synchronized over WebSockets with client-side interpolation.',
+          'The communication system features dynamic speech bubbles rendered directly above character sprites whenever a player chats, alongside a dedicated global chat panel with persistent history and player tags.',
+        ],
+      },
+      {
+        title: 'Monster Hunt - Wave Survival Combat',
+        paragraphs: [
+          'Monster Hunt is a fast-paced survival game mode where players face escalating waves of hostile monsters. Aiming uses mouse crosshair targeting for fluid projectile shooting with custom bullet physics and damage number popups.',
+          'The mode features an evasive dash ability on Right Mouse Button, dynamic weapon switching, gold rewards per kill, lava border hazard zones, and real-time wave score rankings.',
+        ],
+      },
+      {
+        title: 'Maze Survival and Economy System',
+        paragraphs: [
+          'The Maze Exploration mode challenges players with a 2-minute countdown timer, torch-lit corridor navigation, coin collection, trap hazards, and live health management.',
+          'Earned gold coins from combat and maze runs can be spent in the in-game Skin Shop, allowing players to unlock and switch between custom pixel-art character skins like Blue Warrior and Red Knight.',
+        ],
+      },
+      {
+        title: 'Custom 2D Engine and Network Architecture',
+        paragraphs: [
+          'The game is built on a custom Java Swing/AWT 2D rendering pipeline featuring CSV tilemap loading, sprite sheet animation slicing, pixel-art font rendering, and bounding-box collision detection.',
+          'The network layer handles client-server synchronization via JSON messages over WebSockets, managing authentication, position updates, combat triggers, leaderboard synchronization, and room transitions.',
+        ],
+      },
+      {
+        title: 'What I built',
+        paragraphs: [
+          'I developed the full Java client application: the 2D rendering loop, keyboard and mouse input handling, sprite animation system, WebSocket communication thread, overhead dialog bubbles, Monster Hunt wave mechanics, maze game logic, skin shop UI, and leaderboard views.',
+          'This project provided deep hands-on experience with multi-threaded client architectures, custom GUI rendering without external game engines, network state synchronization, and low-level 2D game loops.',
+        ],
+      },
+    ],
+  },
+  {
+    title: 'Island Survival: Escape',
+    slug: 'island-survival',
+    category: 'WebGL',
+    meta: 'Solo | WebGL 2 | Vanilla JS | Vite',
+    role: 'WebGL Engine & Gameplay Developer',
+    shortDescription:
+      'A browser-based first-person 3D survival game built with WebGL 2 and vanilla JavaScript, featuring procedural islands, crafting, day/night cycles, and raft escape mechanics.',
+    card: {
+      imageSrc: '/projects/island-survival-overview.png',
+      alt: 'Island Survival WebGL gameplay overview',
+    },
+    hero: {
+      imageSrc: '/projects/island-survival-raft.png',
+      alt: 'Island Survival raft escape sequence',
+    },
+    about: [
+      'Island Survival: Escape is a first-person 3D survival and crafting game built entirely from scratch with WebGL 2 and vanilla JavaScript without external 3D game engines.',
+      'The player awakens shipwrecked on a procedurally generated tropical island. To escape, you must explore diverse biomes, collect materials and ocean debris, craft tools, manage survival vitals, construct three raft modules, and launch your escape into the sea.',
+    ],
+    info: [
+      'Role: WebGL Engine & Gameplay Developer',
+      'Engine: Custom WebGL 2 Engine (Vanilla JS)',
+      'Language: JavaScript (ES6+), GLSL Shaders',
+      'Build Tool: Vite',
+      'Genre: First-Person 3D Survival & Crafting',
+    ],
+    codeLink: {
+      label: 'Code - Island Survival WebGL',
+      url: 'https://github.com/duongdatdev/island-survival-webgl',
+    },
+    actionLinks: [
+      {
+        label: 'View Source Code',
+        url: 'https://github.com/duongdatdev/island-survival-webgl',
+        className: 'project-btn code-btn',
+      },
+    ],
+    sections: [
+      {
+        title: 'Custom WebGL 2 Engine and Rendering Pipeline',
+        paragraphs: [
+          'The 3D engine is built from scratch using WebGL 2 and GLSL shaders, implementing a first-person camera with pointer locking, low-poly model rendering, custom materials, dynamic lighting, real-time shadow projection, and procedural ocean water rendering with wave vertex displacement.',
+          'Atmospheric rendering includes a dynamic day-night cycle, volumetric ambient lighting transitions, changing weather conditions, and performance-optimized draw-call batching targeting a smooth 60 FPS in desktop browsers.',
+        ],
+      },
+      {
+        title: 'Procedural World Generation and Biomes',
+        paragraphs: [
+          'Each world is generated from a unique seed, carving out organic terrain featuring sandy beaches, dense tropical palm forests, rocky plateaus, hidden caverns, and waterfalls.',
+          'The environment placement system dynamically populates resources, vegetation, collectible rocks, and landmark points of interest while guaranteeing accessible shorelines for the shoreline raft construction site.',
+        ],
+      },
+      {
+        title: 'Survival Vitals, Debris, and Raft Escape Progression',
+        paragraphs: [
+          'The core survival loop challenges players to manage health, hunger, thirst, and stamina against hunger decay, wildlife threats, and environmental exposure.',
+          'Ocean currents regularly wash floating debris ashore, including wood, barrels, and rope. Players gather resources to craft stone axes, survival gear, and the three vital raft escape components: the Raft Frame, Barrel Floats, and the Paddle.',
+          'Once all components are assembled at the shoreline dock, the player triggers the escape cinematic sequence to complete the game run.',
+        ],
+      },
+      {
+        title: 'Wildlife AI, World Saves, and Progression',
+        paragraphs: [
+          'The island ecosystem features both passive wildlife (crabs, seagulls) and hostile threats (wild boars on land, sharks in deep coastal waters) with custom state-machine behavior and combat interactions.',
+          'The game supports saving multiple distinct worlds locally with persistent inventory, constructed buildings, unlocked achievements, and customizable settings.',
+        ],
+      },
+      {
+        title: 'What I built',
+        paragraphs: [
+          'I designed and programmed the complete WebGL 2 rendering pipeline, first-person physics and camera controllers, procedural terrain generator, drifting debris simulation, crafting recipe graph, grid inventory UI, wildlife AI, and save/load serialization.',
+          'This project demonstrated the ability to construct a complete, performant 3D game engine and gameplay loop entirely from low-level WebGL 2 APIs without relying on Three.js, Babylon.js, or Unity.',
+        ],
+      },
+    ],
+  },
+  {
     title: 'Caro Game Web',
     slug: 'caro-game',
+    category: 'Web',
     meta: 'Solo | Laravel | Vue 3',
     role: 'Full-stack Developer',
     shortDescription:
