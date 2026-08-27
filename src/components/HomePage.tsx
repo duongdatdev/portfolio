@@ -7,9 +7,8 @@ const skills = [
   'Unity',
   'JavaScript',
   'TypeScript',
-  'Vue 3',
-  'Laravel',
   'Java',
+  'Solidity',
   'Git',
 ]
 
@@ -33,25 +32,25 @@ const experience = {
   ],
 }
 
-const displayProjects = [
+// Exactly 4 featured games on the main home page in specified order: VectoArena -> Unifire2D -> Voxel Sandbox -> Earth 2048
+const featuredProjects = [
   ...projects.filter((project) => project.slug === 'vectoarena'),
   ...projects.filter((project) => project.slug === 'unifire2d'),
-  ...projects.filter((project) => project.slug === 'caro-game'),
   ...projects.filter((project) => project.slug === 'voxel-sandbox'),
-  ...projects.filter(
-    (project) =>
-      !['vectoarena', 'unifire2d', 'caro-game', 'voxel-sandbox'].includes(
-        project.slug,
-      ),
-  ),
-]
+  ...projects.filter((project) => project.slug === 'earth-2048'),
+].slice(0, 4)
 
 type HomePageProps = {
   onSelectProject: (project: string, slug: string) => void
+  onNavigateToAllProjects: () => void
   motionEnabled: boolean
 }
 
-export function HomePage({ onSelectProject, motionEnabled }: HomePageProps) {
+export function HomePage({
+  onSelectProject,
+  onNavigateToAllProjects,
+  motionEnabled,
+}: HomePageProps) {
   return (
     <>
       <section className="intro" id="top">
@@ -60,15 +59,18 @@ export function HomePage({ onSelectProject, motionEnabled }: HomePageProps) {
           <h1>Hi, I'm Dat</h1>
           <p>
             I am an Information Technology engineering student majoring in{' '}
-            <strong>Software Engineering</strong>, passionate about game
-            development and interactive experiences.
+            <strong>Software Engineering</strong>, passionate about building
+            robust software systems, interactive applications, and real-time
+            experiences.
           </p>
           <p>
-            I enjoy <strong>solving problems</strong>, learning new
-            technologies, and building games that feel good to play. I focus on
-            writing clean, readable code and continuously improving my skills in{' '}
-            <strong>Unity</strong>, <strong>C#</strong>, gameplay programming,
-            UI systems, and backend integration.
+            I enjoy <strong>solving complex problems</strong>, designing clean
+            architectures, and continuously mastering new technologies. My focus
+            is on writing clean, scalable, and high-performance code across both
+            software and game development—spanning{' '}
+            <strong>C# / Unity</strong>, <strong>TypeScript / WebGL</strong>,{' '}
+            <strong>Java</strong>, <strong>modern web frameworks</strong>, and{' '}
+            <strong>backend integration</strong>.
           </p>
         </div>
       </section>
@@ -110,9 +112,19 @@ export function HomePage({ onSelectProject, motionEnabled }: HomePageProps) {
       </section>
 
       <section className="section-block">
-        <h2>Game Programming</h2>
+        <div className="section-header-row">
+          <h2>Game Programming</h2>
+          <button
+            type="button"
+            className="view-all-link"
+            onClick={onNavigateToAllProjects}
+          >
+            <span>All Projects ({projects.length})</span>
+            <span aria-hidden="true">→</span>
+          </button>
+        </div>
         <div className="project-grid">
-          {displayProjects.map((project) => (
+          {featuredProjects.map((project) => (
             <a
               key={project.slug}
               className="project-card"
@@ -150,6 +162,19 @@ export function HomePage({ onSelectProject, motionEnabled }: HomePageProps) {
               </div>
             </a>
           ))}
+        </div>
+
+        <div className="view-all-projects-wrapper">
+          <button
+            type="button"
+            className="view-all-projects-btn"
+            onClick={onNavigateToAllProjects}
+          >
+            <span>Explore All Projects ({projects.length})</span>
+            <span className="btn-arrow" aria-hidden="true">
+              →
+            </span>
+          </button>
         </div>
       </section>
 
