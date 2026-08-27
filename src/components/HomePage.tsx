@@ -97,19 +97,15 @@ export function HomePage({
         <div className="intro-copy">
           <h1>Hi, I'm Dat</h1>
           <p>
-            I am an Information Technology engineering student majoring in{' '}
-            <strong>Software Engineering</strong>, passionate about building
-            robust software systems, interactive applications, and real-time
-            experiences.
+            I am a <strong>Software Engineering</strong> student passionate
+            about building robust software, interactive applications, and
+            real-time games.
           </p>
           <p>
-            I enjoy <strong>solving complex problems</strong>, designing clean
-            architectures, and continuously mastering new technologies. My focus
-            is on writing clean, scalable, and high-performance code across both
-            software and game development—spanning{' '}
-            <strong>C# / Unity</strong>, <strong>TypeScript / WebGL</strong>,{' '}
-            <strong>Java</strong>, <strong>modern web frameworks</strong>, and{' '}
-            <strong>backend integration</strong>.
+            I focus on <strong>clean architecture</strong>, problem-solving, and
+            high-performance code across <strong>C# / Unity</strong>,{' '}
+            <strong>TypeScript / WebGL</strong>, <strong>Java</strong>, and{' '}
+            <strong>backend systems</strong>.
           </p>
         </div>
       </section>
