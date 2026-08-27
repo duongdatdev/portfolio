@@ -17,7 +17,7 @@ const education = [
   {
     school:
       'Vietnam - Korea University of Information and Communication Technology (2023-2028)',
-    degree: 'Current GPA: 3.37',
+    degree: 'Current GPA: 3.38',
   },
 ]
 
