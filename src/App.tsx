@@ -268,7 +268,7 @@ function App() {
             </a>
             <a
               className="resume-link"
-              href="/resume/CV-GameDeveloper-DuongBaoDat.pdf"
+              href="/resume/DuongBaoDat_DeveloperInternFresher_CV.pdf"
               target="_blank"
               rel="noopener noreferrer"
             >
