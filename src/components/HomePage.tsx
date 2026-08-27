@@ -36,8 +36,13 @@ const experience = {
 const displayProjects = [
   ...projects.filter((project) => project.slug === 'vectoarena'),
   ...projects.filter((project) => project.slug === 'unifire2d'),
+  ...projects.filter((project) => project.slug === 'caro-game'),
+  ...projects.filter((project) => project.slug === 'voxel-sandbox'),
   ...projects.filter(
-    (project) => !['vectoarena', 'unifire2d'].includes(project.slug),
+    (project) =>
+      !['vectoarena', 'unifire2d', 'caro-game', 'voxel-sandbox'].includes(
+        project.slug,
+      ),
   ),
 ]
 
