@@ -1,3 +1,4 @@
+import React from 'react'
 import { ProfilePhoto } from './ProfilePhoto'
 import { ProjectMedia } from './ProjectMedia'
 import { projects } from '../data/projects'
@@ -40,6 +41,15 @@ const featuredProjects = [
   ...projects.filter((project) => project.slug === 'earth-2048'),
 ].slice(0, 4)
 
+const navLinks = [
+  { label: 'About', href: '#about' },
+  { label: 'Experience', href: '#experience' },
+  { label: 'Projects', href: '#projects-section' },
+  { label: 'Education', href: '#education' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Contact', href: '#contact' },
+]
+
 type HomePageProps = {
   onSelectProject: (project: string, slug: string) => void
   onNavigateToAllProjects: () => void
@@ -51,9 +61,38 @@ export function HomePage({
   onNavigateToAllProjects,
   motionEnabled,
 }: HomePageProps) {
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault()
+    const target = document.querySelector(href)
+    if (target) {
+      target.scrollIntoView({ behavior: motionEnabled ? 'smooth' : 'auto' })
+    }
+  }
+
   return (
     <>
-      <section className="intro" id="top">
+      <nav className="quick-nav" aria-label="Page navigation">
+        <div className="quick-nav-inner">
+          {navLinks.map((link, idx) => (
+            <React.Fragment key={link.href}>
+              {idx > 0 && (
+                <span className="quick-nav-divider" aria-hidden="true">
+                  •
+                </span>
+              )}
+              <a
+                href={link.href}
+                className="quick-nav-link"
+                onClick={(e) => handleNavClick(e, link.href)}
+              >
+                {link.label}
+              </a>
+            </React.Fragment>
+          ))}
+        </div>
+      </nav>
+
+      <section className="intro" id="about">
         <ProfilePhoto />
         <div className="intro-copy">
           <h1>Hi, I'm Dat</h1>
@@ -75,7 +114,7 @@ export function HomePage({
         </div>
       </section>
 
-      <section className="section-block experience-section">
+      <section className="section-block experience-section" id="experience">
         <h2>Work Experience</h2>
         <div className="career-timeline">
           <article className="career-step career-step-current">
@@ -111,7 +150,7 @@ export function HomePage({
         </div>
       </section>
 
-      <section className="section-block">
+      <section className="section-block" id="projects-section">
         <div className="section-header-row">
           <h2>Game Programming</h2>
           <button
@@ -178,7 +217,7 @@ export function HomePage({
         </div>
       </section>
 
-      <section className="section-block">
+      <section className="section-block" id="education">
         <h2>Education</h2>
         <div className="education-grid">
           {education.map((item) => (
@@ -190,7 +229,7 @@ export function HomePage({
         </div>
       </section>
 
-      <section className="section-block skills-block">
+      <section className="section-block skills-block" id="skills">
         <h2>Technical Skills</h2>
         <div className="skill-list">
           {skills.map((skill) => (
