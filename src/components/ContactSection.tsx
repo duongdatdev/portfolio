@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 
 const FORMSPREE_FORM_ID: string = 'xkoeqwnb'
 
-const SHOW_CONTACT_SECTION = false
-const SHOW_CONTACT_FORM = false
+const SHOW_CONTACT_SECTION = true
+const SHOW_CONTACT_FORM = true
 
 export function ContactSection() {
   const [name, setName] = useState('')
