@@ -3,6 +3,7 @@ import './App.css'
 import { StarfieldBackground } from './components/StarfieldBackground'
 import { ContactSection } from './components/ContactSection'
 import { ScrollToTopButton } from './components/ScrollToTopButton'
+import { CompanionBot } from './components/CompanionBot'
 import { HomePage } from './components/HomePage'
 import { ProjectPage } from './components/ProjectPage'
 import { AllProjectsPage } from './components/AllProjectsPage'
@@ -315,6 +316,7 @@ function App() {
           </>
         )}
       </main>
+      <CompanionBot motionEnabled={motionEnabled} />
       <ScrollToTopButton motionEnabled={motionEnabled} />
     </>
   )

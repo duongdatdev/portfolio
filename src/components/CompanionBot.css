@@ -1,0 +1,481 @@
+/* ==========================================================================
+   Companion Bot (AERO-01) - Sci-Fi Floating Drone Styling
+   ========================================================================== */
+
+.companion-bot-container {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 900;
+  overflow: hidden;
+}
+
+/* Base Drone Positioning Wrapper */
+.companion-bot-wrapper {
+  position: absolute;
+  pointer-events: auto;
+  user-select: none;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1),
+              opacity 0.4s ease,
+              filter 0.4s ease;
+  will-change: transform;
+}
+
+.companion-bot-wrapper.is-flying {
+  transition: transform 2.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.companion-bot-wrapper.is-snappy {
+  transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.companion-bot-wrapper.is-instant {
+  transition: none !important;
+}
+
+/* Floating / Bobbing Animation */
+.bot-body-container {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 0 12px rgba(180, 231, 173, 0.35))
+          drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
+  animation: bot-bob 3.6s ease-in-out infinite alternate;
+  transform-origin: center center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.companion-bot-wrapper:hover .bot-body-container {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 18px rgba(180, 231, 173, 0.6))
+          drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
+}
+
+.bot-body-container.is-spinning {
+  animation: bot-spin 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.bot-body-container.is-boosting {
+  animation: bot-boost-tilt 0.6s ease-in-out infinite alternate !important;
+}
+
+.bot-body-container.is-startled {
+  animation: bot-startle-shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) !important;
+}
+
+/* Bot SVG Visual Elements */
+.bot-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Glowing Thrusters Effect */
+.thruster-glow {
+  transform-origin: center bottom;
+  animation: thruster-pulse 0.8s ease-in-out infinite alternate;
+}
+
+.bot-body-container.is-boosting .thruster-glow {
+  animation: thruster-boost 0.3s ease-in-out infinite alternate;
+}
+
+/* Antenna Beacon Pulse */
+.antenna-beacon {
+  animation: beacon-blink 1.8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Visor Eyes Animation */
+.bot-eye {
+  transition: d 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+  transform-origin: center;
+}
+
+.bot-eye-blink {
+  animation: eye-blink 4.5s infinite;
+}
+
+/* Holographic Speech Bubble */
+.bot-speech-bubble {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  width: 290px;
+  background: rgba(16, 19, 15, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(180, 231, 173, 0.3);
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.8),
+              0 0 15px rgba(180, 231, 173, 0.15),
+              inset 0 0 12px rgba(180, 231, 173, 0.05);
+  border-radius: 14px;
+  padding: 14px 16px 12px;
+  color: #eafbe7;
+  font-family: Montserrat, -apple-system, BlinkMacSystemFont, sans-serif;
+  pointer-events: auto;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              visibility 0.35s;
+  z-index: 910;
+}
+
+.bot-speech-bubble.bubble-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-4px);
+}
+
+/* Bubble Alignment Variants when near screen boundaries */
+.bot-speech-bubble.align-left {
+  left: 0;
+  transform: translateX(0) translateY(0);
+}
+.bot-speech-bubble.align-left.bubble-visible {
+  transform: translateX(0) translateY(-4px);
+}
+
+.bot-speech-bubble.align-right {
+  left: auto;
+  right: 0;
+  transform: translateX(0) translateY(0);
+}
+.bot-speech-bubble.align-right.bubble-visible {
+  transform: translateX(0) translateY(-4px);
+}
+
+.bot-speech-bubble.align-bottom {
+  bottom: auto;
+  top: calc(100% + 14px);
+}
+.bot-speech-bubble.align-bottom.bubble-visible {
+  transform: translateX(-50%) translateY(4px);
+}
+.bot-speech-bubble.align-bottom.align-right.bubble-visible {
+  transform: translateX(0) translateY(4px);
+}
+.bot-speech-bubble.align-bottom.align-left.bubble-visible {
+  transform: translateX(0) translateY(4px);
+}
+
+/* Bubble Header & Status */
+.bubble-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(180, 231, 173, 0.15);
+}
+
+.bot-identity {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--mint, #b4e7ad);
+  text-transform: uppercase;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime, #a7df6f);
+  box-shadow: 0 0 8px var(--lime, #a7df6f);
+  animation: beacon-blink 1.4s infinite;
+}
+
+.bubble-close-btn {
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  padding: 2px 5px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.bubble-close-btn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Bubble Message Text */
+.bubble-text {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: #f0faf0;
+  margin: 0 0 10px 0;
+  font-weight: 450;
+  word-break: break-word;
+}
+
+/* Bubble Action / Link Button */
+.bubble-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(180, 231, 173, 0.2), rgba(167, 223, 111, 0.1));
+  border: 1px solid rgba(180, 231, 173, 0.4);
+  color: var(--cyan, #b8f7a4);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.bubble-action-btn:hover {
+  background: rgba(180, 231, 173, 0.35);
+  color: #ffffff;
+  border-color: var(--mint, #b4e7ad);
+  transform: translateY(-1px);
+  box-shadow: 0 0 12px rgba(180, 231, 173, 0.3);
+}
+
+.bubble-action-btn svg {
+  width: 12px;
+  height: 12px;
+  transition: transform 0.2s ease;
+}
+
+.bubble-action-btn:hover svg {
+  transform: translateX(2px);
+}
+
+/* Little Pointer Tail for Speech Bubble */
+.bubble-tail {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 7px solid rgba(180, 231, 173, 0.3);
+}
+
+.bot-speech-bubble.align-bottom .bubble-tail {
+  top: auto;
+  bottom: 100%;
+  border-top: none;
+  border-bottom: 7px solid rgba(180, 231, 173, 0.3);
+}
+
+.bot-speech-bubble.align-left .bubble-tail {
+  left: 32px;
+}
+
+.bot-speech-bubble.align-right .bubble-tail {
+  left: auto;
+  right: 32px;
+}
+
+/* Sleep / Minimized Dock Badge */
+.bot-minimized-badge {
+  position: fixed;
+  bottom: 96px;
+  right: 24px;
+  background: rgba(16, 19, 15, 0.9);
+  border: 1px solid rgba(180, 231, 173, 0.3);
+  border-radius: 20px;
+  padding: 6px 12px 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--mint, #b4e7ad);
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+  pointer-events: auto;
+  z-index: 900;
+  transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bot-minimized-badge:hover {
+  border-color: var(--mint, #b4e7ad);
+  background: rgba(25, 30, 24, 0.95);
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(180, 231, 173, 0.3);
+}
+
+.bot-minimized-badge .mini-icon {
+  width: 22px;
+  height: 22px;
+}
+
+/* Click Spark Particle Animation */
+.click-spark-burst {
+  position: absolute;
+  inset: -10px;
+  pointer-events: none;
+  border-radius: 50%;
+  border: 2px solid var(--accent-hover, #ddff9f);
+  opacity: 0;
+  transform: scale(0.6);
+  animation: spark-burst 0.5s ease-out forwards;
+}
+
+/* Keyframe Animations */
+@keyframes bot-bob {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(1.5deg);
+  }
+  100% {
+    transform: translateY(3px) rotate(-1.5deg);
+  }
+}
+
+@keyframes bot-spin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.25);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+@keyframes bot-boost-tilt {
+  0% {
+    transform: translateY(-4px) rotate(-8deg) scale(1.05);
+  }
+  100% {
+    transform: translateY(4px) rotate(8deg) scale(1.05);
+  }
+}
+
+@keyframes thruster-pulse {
+  0% {
+    opacity: 0.65;
+    transform: scaleY(0.85);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(1.3);
+  }
+}
+
+@keyframes thruster-boost {
+  0% {
+    opacity: 0.9;
+    transform: scaleY(1.3) scaleX(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scaleY(2) scaleX(1.3);
+  }
+}
+
+@keyframes beacon-blink {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes eye-blink {
+  0%, 92%, 100% {
+    transform: scaleY(1);
+  }
+  96% {
+    transform: scaleY(0.1);
+  }
+}
+
+@keyframes bot-startle-shake {
+  0% {
+    transform: scale(1.18) rotate(0deg) translateY(-8px);
+  }
+  20% {
+    transform: scale(1.22) rotate(-12deg) translateY(-12px);
+  }
+  40% {
+    transform: scale(1.15) rotate(10deg) translateY(-6px);
+  }
+  60% {
+    transform: scale(1.1) rotate(-6deg) translateY(-4px);
+  }
+  80% {
+    transform: scale(1.05) rotate(3deg) translateY(-2px);
+  }
+  100% {
+    transform: scale(1) rotate(0deg) translateY(0px);
+  }
+}
+
+@keyframes spark-burst {
+  0% {
+    opacity: 1;
+    transform: scale(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.6);
+  }
+}
+
+/* ==========================================================================
+   Reduced Motion & Responsive Adjustments
+   ========================================================================== */
+
+.companion-bot-wrapper.motion-disabled,
+.companion-bot-wrapper.motion-disabled .bot-body-container,
+.companion-bot-wrapper.motion-disabled .thruster-glow,
+.companion-bot-wrapper.motion-disabled .antenna-beacon,
+.companion-bot-wrapper.motion-disabled .bot-eye-blink {
+  animation: none !important;
+  transition: opacity 0.2s ease !important;
+}
+
+@media (max-width: 600px) {
+  .bot-body-container {
+    width: 52px;
+    height: 52px;
+  }
+
+  .bot-speech-bubble {
+    width: 250px;
+    padding: 10px 12px;
+  }
+
+  .bubble-text {
+    font-size: 0.82rem;
+  }
+
+  .bot-minimized-badge {
+    bottom: 84px;
+    right: 16px;
+    padding: 5px 10px 5px 6px;
+    font-size: 0.72rem;
+  }
+}
